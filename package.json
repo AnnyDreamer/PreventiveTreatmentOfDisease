@@ -1,0 +1,23 @@
+{
+  "name": "zhiwebing",
+  "private": true,
+  "scripts": {
+    "dev:web": "turbo dev --filter=@zhiwebing/web",
+    "dev:mini": "turbo dev --filter=@zhiwebing/mini",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "db:generate": "turbo db:generate --filter=@zhiwebing/db",
+    "db:push": "turbo db:push --filter=@zhiwebing/db",
+    "db:seed": "turbo db:seed --filter=@zhiwebing/db",
+    "db:studio": "turbo db:studio --filter=@zhiwebing/db"
+  },
+  "devDependencies": {
+    "turbo": "^2.4.0",
+    "typescript": "^5.7.0",
+    "@types/node": "^22.0.0"
+  },
+  "packageManager": "pnpm@9.13.2",
+  "engines": {
+    "node": ">=20"
+  }
+}

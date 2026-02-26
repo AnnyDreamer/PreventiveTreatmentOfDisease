@@ -1,0 +1,228 @@
+.result-page {
+  padding: 24px;
+  min-height: 100vh;
+  box-sizing: border-box;
+  background: var(--color-bg);
+  padding-bottom: 60px;
+
+  &--loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.loading-text {
+  font-size: 28px;
+  color: var(--color-text-secondary);
+}
+
+/* 主体质卡片 */
+.primary-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: var(--radius-xl);
+  padding: 48px 32px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-lg);
+}
+
+.primary-icon {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.icon-char {
+  font-size: 48px;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.primary-name {
+  font-size: 44px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 12px;
+}
+
+.primary-score {
+  display: flex;
+  align-items: baseline;
+}
+
+.score-value {
+  font-size: 64px;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.score-unit {
+  font-size: 28px;
+  color: rgba(255, 255, 255, 0.8);
+  margin-left: 4px;
+}
+
+/* 通用 section */
+.section {
+  margin-bottom: 24px;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: var(--radius-md);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+}
+
+.section-title {
+  font-size: 30px;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 20px;
+}
+
+/* 柱状图 */
+.chart-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.bar-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.bar-label {
+  width: 100px;
+  font-size: 24px;
+  color: var(--color-text-secondary);
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.bar-track {
+  flex: 1;
+  height: 16px;
+  background: var(--color-border-light);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 8px;
+  transition: width 0.5s ease;
+  min-width: 4px;
+}
+
+.bar-value {
+  width: 48px;
+  font-size: 24px;
+  color: var(--color-text);
+  font-weight: 500;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* 标签 */
+.tags-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.tag {
+  border: 1px solid;
+  border-radius: 20px;
+  padding: 8px 20px;
+}
+
+.tag-text {
+  font-size: 24px;
+}
+
+/* 风险 */
+.risk-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.risk-item {
+  display: flex;
+  align-items: center;
+}
+
+.risk-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-danger);
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.risk-text {
+  font-size: 26px;
+  color: var(--color-text);
+}
+
+/* 兼夹体质 */
+.secondary-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.secondary-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.secondary-name {
+  width: 80px;
+  font-size: 26px;
+  color: var(--color-text);
+  flex-shrink: 0;
+}
+
+.secondary-bar-track {
+  flex: 1;
+  height: 12px;
+  background: var(--color-border-light);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.secondary-bar-fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.5s ease;
+}
+
+.secondary-score {
+  font-size: 24px;
+  color: var(--color-text-secondary);
+  flex-shrink: 0;
+  width: 60px;
+  text-align: right;
+}
+
+/* 操作按钮 */
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 16px;
+  padding-bottom: 40px;
+}

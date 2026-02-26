@@ -1,0 +1,48 @@
+export default defineAppConfig({
+  pages: [
+    'pages/index/index',
+    'pages/assessment/index',
+    'pages/result/index',
+    'pages/plan/index',
+    'pages/diary/index',
+    'pages/chat/index',
+    'pages/profile/index',
+  ],
+  tabBar: {
+    color: '#6b6b8a',
+    selectedColor: '#8b5a2b',
+    backgroundColor: '#faf7f2',
+    list: [
+      {
+        pagePath: 'pages/index/index',
+        text: '首页',
+        iconPath: 'assets/tab-home.png',
+        selectedIconPath: 'assets/tab-home-active.png',
+      },
+      {
+        pagePath: 'pages/diary/index',
+        text: '日记',
+        iconPath: 'assets/tab-diary.png',
+        selectedIconPath: 'assets/tab-diary-active.png',
+      },
+      {
+        pagePath: 'pages/chat/index',
+        text: '助手',
+        iconPath: 'assets/tab-chat.png',
+        selectedIconPath: 'assets/tab-chat-active.png',
+      },
+      {
+        pagePath: 'pages/profile/index',
+        text: '我的',
+        iconPath: 'assets/tab-profile.png',
+        selectedIconPath: 'assets/tab-profile-active.png',
+      },
+    ],
+  },
+  window: {
+    navigationBarBackgroundColor: '#faf7f2',
+    navigationBarTitleText: '治未病',
+    navigationBarTextStyle: 'black',
+    backgroundColor: '#faf7f2',
+  },
+})

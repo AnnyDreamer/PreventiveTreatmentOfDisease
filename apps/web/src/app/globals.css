@@ -1,0 +1,154 @@
+@import "tailwindcss";
+
+@theme {
+  /* 中医水墨风调色板 */
+  --color-ink-950: #0a0a0f;
+  --color-ink-900: #1a1a2e;
+  --color-ink-800: #2d2d44;
+  --color-ink-700: #3d3d5c;
+  --color-ink-600: #4a4a6a;
+  --color-ink-500: #6b6b8a;
+  --color-ink-400: #8e8ea8;
+  --color-ink-300: #b4b4c8;
+  --color-ink-200: #d4d4e0;
+  --color-ink-100: #eaeaf0;
+  --color-ink-50: #f5f5f8;
+
+  /* 中药草本色 */
+  --color-herb-900: #2d1b0e;
+  --color-herb-800: #4a2c17;
+  --color-herb-700: #6b3f22;
+  --color-herb-600: #8b5a2b;
+  --color-herb-500: #a67c52;
+  --color-herb-400: #c4a882;
+  --color-herb-300: #dcc8a8;
+  --color-herb-200: #ede0cc;
+  --color-herb-100: #f5efe4;
+  --color-herb-50: #faf7f2;
+
+  /* 朱砂红 - 强调色 */
+  --color-cinnabar-700: #8b1a1a;
+  --color-cinnabar-600: #b22222;
+  --color-cinnabar-500: #c83232;
+  --color-cinnabar-400: #dc5555;
+  --color-cinnabar-300: #e88888;
+  --color-cinnabar-200: #f2bbbb;
+  --color-cinnabar-100: #fce8e8;
+
+  /* 青瓷绿 - 健康/成功色 */
+  --color-celadon-700: #1a5c3a;
+  --color-celadon-600: #22784e;
+  --color-celadon-500: #2d9a64;
+  --color-celadon-400: #4cb882;
+  --color-celadon-300: #7ed4a8;
+  --color-celadon-200: #b8e8cc;
+  --color-celadon-100: #e6f7ee;
+
+  /* 琥珀黄 - 警告色 */
+  --color-amber-600: #b8860b;
+  --color-amber-500: #daa520;
+  --color-amber-400: #e8c040;
+  --color-amber-300: #f0d878;
+  --color-amber-200: #f8ecb0;
+  --color-amber-100: #fdf8e8;
+
+  /* 语义化颜色 */
+  --color-background: #faf7f2;
+  --color-foreground: #1a1a2e;
+  --color-card: #ffffff;
+  --color-card-foreground: #1a1a2e;
+  --color-primary: #8b5a2b;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #f5efe4;
+  --color-secondary-foreground: #4a2c17;
+  --color-muted: #eaeaf0;
+  --color-muted-foreground: #6b6b8a;
+  --color-accent: #f5efe4;
+  --color-accent-foreground: #4a2c17;
+  --color-destructive: #c83232;
+  --color-border: #ede0cc;
+  --color-input: #ede0cc;
+  --color-ring: #a67c52;
+  --color-sidebar: #faf7f2;
+  --color-sidebar-foreground: #1a1a2e;
+  --color-sidebar-border: #ede0cc;
+  --color-sidebar-accent: #f5efe4;
+
+  --radius-lg: 0.75rem;
+  --radius-md: 0.5rem;
+  --radius-sm: 0.375rem;
+
+  --font-display: "Noto Serif SC", "Source Han Serif SC", "SimSun", serif;
+  --font-body: "Noto Sans SC", "Source Han Sans SC", "PingFang SC", sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+  }
+}
+
+/* 水墨纹理背景 */
+.ink-texture {
+  background-image:
+    radial-gradient(ellipse at 20% 50%, rgba(166, 124, 82, 0.06) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(139, 90, 43, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 80%, rgba(107, 107, 138, 0.03) 0%, transparent 40%);
+}
+
+/* 卡片悬浮效果 */
+.card-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 25px -5px rgba(139, 90, 43, 0.1),
+    0 4px 10px -3px rgba(139, 90, 43, 0.05);
+}
+
+/* 体质雷达图容器 */
+.radar-container {
+  background:
+    radial-gradient(circle at center, rgba(166, 124, 82, 0.05) 0%, transparent 70%);
+}
+
+/* 自定义滚动条 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-herb-300);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-herb-400);
+}
+
+/* 淡入动画 */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out forwards;
+}
+
+/* 交错动画 */
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }

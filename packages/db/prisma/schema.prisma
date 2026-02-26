@@ -1,0 +1,253 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 用户角色枚举
+enum Role {
+  PATIENT
+  DOCTOR
+  ADMIN
+}
+
+// 9种中医体质类型
+enum ConstitutionType {
+  BALANCED        // 平和质
+  QI_DEFICIENCY   // 气虚质
+  YANG_DEFICIENCY // 阳虚质
+  YIN_DEFICIENCY  // 阴虚质
+  PHLEGM_DAMPNESS // 痰湿质
+  DAMP_HEAT       // 湿热质
+  BLOOD_STASIS    // 血瘀质
+  QI_STAGNATION   // 气郁质
+  SPECIAL         // 特禀质
+}
+
+// 风险等级
+enum RiskLevel {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+// 随访状态
+enum FollowupStatus {
+  PENDING
+  COMPLETED
+  MISSED
+  CANCELLED
+}
+
+// 用户表
+model User {
+  id        String   @id @default(cuid())
+  phone     String?  @unique
+  openid    String?  @unique
+  unionid   String?
+  name      String?
+  avatar    String?
+  role      Role     @default(PATIENT)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  patientProfile  PatientProfile?
+  doctorProfile   DoctorProfile?
+  assessments     ConstitutionAssessment[]
+  healthPlans     HealthPlan[]
+  diaryEntries    DiaryEntry[]
+  chatSessions    ChatSession[]
+
+  hospitalId      String?
+  hospital        Hospital? @relation(fields: [hospitalId], references: [id])
+
+  @@index([role])
+  @@index([hospitalId])
+}
+
+// 患者档案
+model PatientProfile {
+  id          String    @id @default(cuid())
+  userId      String    @unique
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  gender      String?
+  birthDate   DateTime?
+  height      Float?
+  weight      Float?
+  allergies   Json?     // string[]
+  medicalHistory Json?  // string[]
+  riskLevel   RiskLevel @default(LOW)
+  lastVisitDate DateTime?
+  primaryConstitution ConstitutionType?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  followupPlans FollowupPlan[]
+}
+
+// 医生档案
+model DoctorProfile {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title       String?  // 职称
+  department  String?  // 科室
+  specialty   String?  // 专长
+  licenseNo   String?  // 执业证号
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  followupPlans FollowupPlan[]
+}
+
+// 体质评估
+model ConstitutionAssessment {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  answers     Json     // Record<string, number> 问卷答案
+  scores      Json     // Record<ConstitutionType, number> 各体质得分
+  primaryType ConstitutionType
+  secondaryTypes Json? // ConstitutionType[] 兼夹体质
+  aiAnalysis  String?  @db.Text  // AI分析结果
+  createdAt   DateTime @default(now())
+
+  healthPlan  HealthPlan?
+
+  @@index([userId])
+  @@index([primaryType])
+}
+
+// 养生方案
+model HealthPlan {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  assessmentId String   @unique
+  assessment   ConstitutionAssessment @relation(fields: [assessmentId], references: [id])
+
+  dietAdvice      Json  // 饮食建议 {recommended: string[], avoid: string[], recipes: string[]}
+  exerciseAdvice  Json  // 运动建议
+  lifestyleAdvice Json  // 起居建议
+  emotionAdvice   Json  // 情志建议
+  acupointAdvice  Json? // 穴位建议
+
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+}
+
+// 健康日记
+model DiaryEntry {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date        DateTime @db.Date
+
+  sleepHours    Float?
+  sleepQuality  Int?    // 1-5
+  moodScore     Int?    // 1-5
+  exerciseMinutes Int?
+  exerciseType  String?
+  dietNote      String?
+  symptoms      Json?   // string[]
+  note          String? @db.Text
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([userId, date])
+  @@index([userId])
+}
+
+// AI对话会话
+model ChatSession {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  messages  ChatMessage[]
+
+  @@index([userId])
+}
+
+// AI对话消息
+model ChatMessage {
+  id        String   @id @default(cuid())
+  sessionId String
+  session   ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  role      String   // "user" | "assistant" | "system"
+  content   String   @db.Text
+  metadata  Json?    // 意图识别、安全标记等
+  createdAt DateTime @default(now())
+
+  @@index([sessionId])
+}
+
+// 随访计划
+model FollowupPlan {
+  id          String   @id @default(cuid())
+  patientId   String
+  patient     PatientProfile @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  doctorId    String?
+  doctor      DoctorProfile? @relation(fields: [doctorId], references: [id])
+
+  name        String
+  description String?  @db.Text
+  startDate   DateTime
+  endDate     DateTime?
+  intervalDays Int     @default(7)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  records     FollowupRecord[]
+
+  @@index([patientId])
+  @@index([doctorId])
+}
+
+// 随访记录
+model FollowupRecord {
+  id          String   @id @default(cuid())
+  planId      String
+  plan        FollowupPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  scheduledDate DateTime
+  completedDate DateTime?
+  status      FollowupStatus @default(PENDING)
+
+  feedback    Json?    // 患者反馈
+  aiSummary   String?  @db.Text
+  riskFlag    Boolean  @default(false)
+  riskNote    String?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([planId])
+  @@index([status])
+  @@index([scheduledDate])
+}
+
+// 医院/机构
+model Hospital {
+  id        String   @id @default(cuid())
+  name      String
+  level     String?  // 等级：三甲、三乙等
+  address   String?
+  config    Json?    // 功能开关配置
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users     User[]
+}
