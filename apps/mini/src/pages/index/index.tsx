@@ -140,19 +140,20 @@ export default function IndexPage() {
         </View>
       )}
 
-      {/* 打卡提醒 */}
+      {/* 节气 + 打卡 合并横条 */}
       <View
-        className='checkin-bar'
+        className='daily-bar'
         onClick={() => Taro.switchTab({ url: '/pages/diary/index' })}
       >
-        <View className='checkin-bar__stamp'>
-          <Text className='checkin-bar__stamp-text'>卯</Text>
+        <View className='daily-bar__season'>
+          <View className={`daily-bar__season-dot daily-bar__season-dot--${seasonTip.key}`} />
+          <Text className='daily-bar__season-text'>
+            {seasonTip.season}季 · {seasonTip.tip}
+          </Text>
         </View>
-        <View className='checkin-bar__body'>
-          <Text className='checkin-bar__title'>今日健康打卡</Text>
-          <Text className='checkin-bar__desc'>记录身体状态，积累健康数据</Text>
+        <View className='daily-bar__checkin'>
+          <Text className='daily-bar__checkin-text'>今日打卡 ›</Text>
         </View>
-        <Text className='checkin-bar__action'>去打卡 ›</Text>
       </View>
 
       {/* 核心服务 */}
@@ -200,19 +201,6 @@ export default function IndexPage() {
               <Text className='svc-item__desc'>{entry.desc}</Text>
             </View>
           ))}
-        </View>
-      </View>
-
-      {/* 时令养生 */}
-      <View className={`seasonal-card seasonal-card--${seasonTip.key}`}>
-        <View className='seasonal-card__header'>
-          <View className={`seasonal-card__seal seasonal-card__seal--${seasonTip.key}`}>
-            <Text className='seasonal-card__seal-text'>{seasonTip.season}</Text>
-          </View>
-          <View className='seasonal-card__info'>
-            <Text className='seasonal-card__title'>{seasonTip.tip}</Text>
-            <Text className='seasonal-card__desc'>{seasonTip.desc}</Text>
-          </View>
         </View>
       </View>
 

@@ -258,58 +258,60 @@
 }
 
 /* ============================================
-   打卡提醒条
+   节气 + 打卡 合并横条
    ============================================ */
-.checkin-bar {
+.daily-bar {
   display: flex;
   align-items: center;
-  margin: 0 24px 32px;
-  background: linear-gradient(135deg, #fffaf0 0%, #fff5e6 100%);
+  justify-content: space-between;
+  margin: 0 24px 24px;
+  background: #ffffff;
   border-radius: var(--radius-md);
-  padding: 20px 24px;
-  border: 1px solid rgba(218, 165, 32, 0.15);
+  padding: 18px 24px;
+  border-left: 4px solid var(--color-primary);
+  box-shadow: var(--shadow-sm);
 }
 
-.checkin-bar__stamp {
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #daa520 0%, #c49320 100%);
+.daily-bar__season {
   display: flex;
   align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  margin-right: 16px;
-  box-shadow: 0 2px 8px rgba(218, 165, 32, 0.3);
-}
-
-.checkin-bar__stamp-text {
-  color: #ffffff;
-  font-size: 26px;
-  font-weight: 700;
-}
-
-.checkin-bar__body {
   flex: 1;
+  min-width: 0;
 }
 
-.checkin-bar__title {
-  font-size: 28px;
-  font-weight: 600;
-  color: var(--color-text);
-  display: block;
-  margin-bottom: 2px;
-}
-
-.checkin-bar__desc {
-  font-size: 22px;
-  color: var(--color-text-secondary);
-}
-
-.checkin-bar__action {
+.daily-bar__season-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin-right: 12px;
   flex-shrink: 0;
-  color: #c49320;
-  font-size: 26px;
+
+  &--spring { background: #2daa6f; }
+  &--summer { background: #ff6b6b; }
+  &--autumn { background: #f9a825; }
+  &--winter { background: #5dc48a; }
+}
+
+.daily-bar__season-text {
+  font-size: 24px;
+  color: var(--color-text-secondary);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.daily-bar__checkin {
+  flex-shrink: 0;
+  background: var(--color-warning);
+  border-radius: 20px;
+  padding: 8px 20px;
+  margin-left: 16px;
+}
+
+.daily-bar__checkin-text {
+  color: #ffffff;
+  font-size: 24px;
   font-weight: 600;
 }
 
@@ -442,69 +444,6 @@
 .svc-item__desc {
   font-size: 22px;
   color: var(--color-text-secondary);
-}
-
-/* ============================================
-   时令养生卡
-   ============================================ */
-.seasonal-card {
-  margin: 0 24px 24px;
-  background: #ffffff;
-  border-radius: var(--radius-md);
-  padding: 24px 28px;
-  border-left: 6px solid;
-  box-shadow: var(--shadow-sm);
-
-  &--spring { border-left-color: #2d9a64; }
-  &--summer { border-left-color: #c83232; }
-  &--autumn { border-left-color: #daa520; }
-  &--winter { border-left-color: #8b5a2b; }
-}
-
-.seasonal-card__header {
-  display: flex;
-  align-items: center;
-}
-
-.seasonal-card__seal {
-  width: 56px;
-  height: 56px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  margin-right: 20px;
-  transform: rotate(-5deg);
-
-  &--spring { background: rgba(45, 154, 100, 0.1); }
-  &--summer { background: rgba(200, 50, 50, 0.1); }
-  &--autumn { background: rgba(218, 165, 32, 0.1); }
-  &--winter { background: rgba(139, 90, 43, 0.1); }
-}
-
-.seasonal-card__seal-text {
-  font-size: 32px;
-  font-weight: 700;
-  color: var(--color-primary);
-}
-
-.seasonal-card__info {
-  flex: 1;
-}
-
-.seasonal-card__title {
-  font-size: 28px;
-  font-weight: 600;
-  color: var(--color-text);
-  display: block;
-  margin-bottom: 4px;
-}
-
-.seasonal-card__desc {
-  font-size: 24px;
-  color: var(--color-text-secondary);
-  line-height: 1.5;
 }
 
 /* ============================================
