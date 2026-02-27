@@ -1,258 +1,515 @@
 .index-page {
-  padding: 24px;
   min-height: 100vh;
-  box-sizing: border-box;
   background: var(--color-bg);
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
-/* 头部 */
-.header {
+/* ============================================
+   顶部 Banner — 清新绿色渐变
+   ============================================ */
+.banner {
+  position: relative;
+  padding: 48px 32px 28px;
+  overflow: hidden;
+}
+
+.banner-deco {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, #d4f0e3 0%, #e8f7ef 40%, var(--color-bg) 100%);
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: -60px;
+    right: -40px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(45, 170, 111, 0.08) 0%, transparent 70%);
+  }
+}
+
+.banner-content {
+  position: relative;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: 32px;
-  padding-top: 16px;
 }
 
-.header-info {
+.banner-left {
   display: flex;
   flex-direction: column;
+  flex: 1;
 }
 
 .greeting {
-  font-size: 40px;
+  font-size: 26px;
+  color: var(--color-text-secondary);
+  margin-bottom: 4px;
+}
+
+.nickname {
+  font-size: 44px;
   font-weight: 700;
   color: var(--color-text);
   margin-bottom: 8px;
 }
 
-.sub-text {
-  font-size: 26px;
-  color: var(--color-text-secondary);
-}
-
 .avatar-wrap {
   flex-shrink: 0;
+  margin-left: 24px;
 }
 
 .avatar {
-  width: 88px;
-  height: 88px;
+  width: 96px;
+  height: 96px;
   border-radius: 50%;
-  border: 4px solid var(--color-border);
+  border: 3px solid rgba(45, 170, 111, 0.2);
 }
 
 .avatar-placeholder {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #8b5a2b 0%, #a67c52 100%);
-  border: none;
+  background: linear-gradient(135deg, #2daa6f 0%, #1e8a55 100%);
+  border-color: rgba(45, 170, 111, 0.15);
 }
 
 .avatar-text {
   color: #ffffff;
-  font-size: 36px;
+  font-size: 40px;
   font-weight: 600;
 }
 
-/* 评估卡片 - 未评估 */
-.assessment-card {
-  background: #ffffff;
+/* ============================================
+   体质评估卡 — 双状态
+   ============================================ */
+.assess-card {
+  margin: 0 24px 20px;
   border-radius: var(--radius-lg);
-  padding: 32px;
-  margin-bottom: 24px;
-  box-shadow: var(--shadow-md);
-  display: flex;
-  align-items: center;
-
-  &--empty {
-    background: linear-gradient(135deg, #faf7f2 0%, #f5ece0 100%);
-    border: 2px dashed var(--color-border);
-  }
-
-  &--result {
-    flex-direction: column;
-    align-items: stretch;
-    background: linear-gradient(135deg, #8b5a2b 0%, #6d4520 100%);
-  }
+  padding: 28px;
+  box-shadow: var(--shadow-sm);
 }
 
-.assessment-card__icon {
-  width: 80px;
-  height: 80px;
+/* 未评估 */
+.assess-card--empty {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #ffffff 0%, #faf5ed 100%);
+  border: 1.5px dashed rgba(139, 90, 43, 0.25);
+}
+
+.assess-card__badge {
+  width: 72px;
+  height: 72px;
   border-radius: 50%;
-  background: var(--color-primary);
+  background: linear-gradient(135deg, #8b5a2b 0%, #a67c52 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  margin-right: 24px;
+  margin-right: 20px;
+  box-shadow: 0 4px 12px rgba(139, 90, 43, 0.25);
 }
 
-.icon-text {
+.assess-card__badge-text {
   color: #ffffff;
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.assess-card__body {
+  flex: 1;
+}
+
+.assess-card__title {
+  font-size: 30px;
+  font-weight: 600;
+  color: var(--color-text);
+  display: block;
+  margin-bottom: 6px;
+}
+
+.assess-card__desc {
+  font-size: 24px;
+  color: var(--color-text-secondary);
+  line-height: 1.4;
+}
+
+.assess-card__arrow {
+  flex-shrink: 0;
+  margin-left: 12px;
+  font-size: 44px;
+  color: var(--color-primary);
+  font-weight: 300;
+}
+
+/* 已评估 */
+.assess-card--result {
+  background: linear-gradient(135deg, #8b5a2b 0%, #6d4520 100%);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: -20px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.03);
+  }
+}
+
+.result-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  position: relative;
+}
+
+.result-label {
+  font-size: 22px;
+  color: rgba(255, 255, 255, 0.65);
+  display: block;
+  margin-bottom: 6px;
+}
+
+.result-name {
+  font-size: 42px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.result-score-wrap {
+  display: flex;
+  align-items: baseline;
+}
+
+.result-score {
+  font-size: 48px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.result-score-unit {
+  font-size: 24px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-left: 4px;
+}
+
+.result-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.12);
+  margin: 20px 0;
+}
+
+.result-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.result-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  flex: 1;
+}
+
+.result-tag {
+  background: rgba(255, 255, 255, 0.13);
+  border-radius: 8px;
+  padding: 6px 14px;
+}
+
+.result-tag__text {
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 22px;
+}
+
+.result-more {
+  flex-shrink: 0;
+  margin-left: 16px;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 20px;
+  padding: 6px 18px;
+}
+
+.result-more__text {
+  color: #ffffff;
+  font-size: 22px;
+}
+
+/* ============================================
+   打卡提醒条
+   ============================================ */
+.checkin-bar {
+  display: flex;
+  align-items: center;
+  margin: 0 24px 32px;
+  background: linear-gradient(135deg, #fffaf0 0%, #fff5e6 100%);
+  border-radius: var(--radius-md);
+  padding: 20px 24px;
+  border: 1px solid rgba(218, 165, 32, 0.15);
+}
+
+.checkin-bar__stamp {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #daa520 0%, #c49320 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-right: 16px;
+  box-shadow: 0 2px 8px rgba(218, 165, 32, 0.3);
+}
+
+.checkin-bar__stamp-text {
+  color: #ffffff;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.checkin-bar__body {
+  flex: 1;
+}
+
+.checkin-bar__title {
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--color-text);
+  display: block;
+  margin-bottom: 2px;
+}
+
+.checkin-bar__desc {
+  font-size: 22px;
+  color: var(--color-text-secondary);
+}
+
+.checkin-bar__action {
+  flex-shrink: 0;
+  color: #c49320;
+  font-size: 26px;
+  font-weight: 600;
+}
+
+/* ============================================
+   模块标题 — 传统分隔线
+   ============================================ */
+.section {
+  margin: 0 24px 32px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.section-header__line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(139, 90, 43, 0.18) 50%,
+    transparent 100%
+  );
+}
+
+.section-header__title {
+  font-size: 30px;
+  font-weight: 600;
+  color: var(--color-text);
+  padding: 0 24px;
+  letter-spacing: 4px;
+}
+
+/* ============================================
+   功能宫格 (2×2)
+   ============================================ */
+.svc-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.svc-item {
+  width: calc(50% - 8px);
+  background: #ffffff;
+  border-radius: var(--radius-md);
+  padding: 28px 20px 24px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: transparent;
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+    transition: background 0.2s;
+  }
+
+  &:active {
+    transform: scale(0.97);
+    opacity: 0.92;
+  }
+}
+
+.svc-item__icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+
+  /* 主题色变体 */
+  &--herb {
+    background: #faf0e6;
+    .svc-item__icon-char { color: #8b5a2b; }
+  }
+
+  &--celadon {
+    background: #e8f3ec;
+    .svc-item__icon-char { color: #2d9a64; }
+  }
+
+  &--cinnabar {
+    background: #fceaea;
+    .svc-item__icon-char { color: #c83232; }
+  }
+
+  &--blue {
+    background: #e8eff8;
+    .svc-item__icon-char { color: #4a7fb5; }
+  }
+
+  &--amber {
+    background: #fdf3e7;
+    .svc-item__icon-char { color: #d4873f; }
+  }
+
+  &--purple {
+    background: #f0edf8;
+    .svc-item__icon-char { color: #7b6cb5; }
+  }
+}
+
+.svc-item__icon-char {
   font-size: 40px;
   font-weight: 700;
 }
 
-.assessment-card__content {
+.svc-item__title {
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 4px;
+}
+
+.svc-item__desc {
+  font-size: 22px;
+  color: var(--color-text-secondary);
+}
+
+/* ============================================
+   时令养生卡
+   ============================================ */
+.seasonal-card {
+  margin: 0 24px 24px;
+  background: #ffffff;
+  border-radius: var(--radius-md);
+  padding: 24px 28px;
+  border-left: 6px solid;
+  box-shadow: var(--shadow-sm);
+
+  &--spring { border-left-color: #2d9a64; }
+  &--summer { border-left-color: #c83232; }
+  &--autumn { border-left-color: #daa520; }
+  &--winter { border-left-color: #8b5a2b; }
+}
+
+.seasonal-card__header {
+  display: flex;
+  align-items: center;
+}
+
+.seasonal-card__seal {
+  width: 56px;
+  height: 56px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-right: 20px;
+  transform: rotate(-5deg);
+
+  &--spring { background: rgba(45, 154, 100, 0.1); }
+  &--summer { background: rgba(200, 50, 50, 0.1); }
+  &--autumn { background: rgba(218, 165, 32, 0.1); }
+  &--winter { background: rgba(139, 90, 43, 0.1); }
+}
+
+.seasonal-card__seal-text {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.seasonal-card__info {
   flex: 1;
 }
 
-.assessment-card__title {
-  font-size: 32px;
+.seasonal-card__title {
+  font-size: 28px;
   font-weight: 600;
   color: var(--color-text);
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
-.assessment-card__desc {
+.seasonal-card__desc {
   font-size: 24px;
   color: var(--color-text-secondary);
   line-height: 1.5;
 }
 
-.assessment-card__arrow {
-  flex-shrink: 0;
-  margin-left: 16px;
-}
-
-.arrow {
-  font-size: 32px;
-  color: var(--color-text-secondary);
-}
-
-/* 评估卡片 - 已评估 */
-.result-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
-
-.result-type__name {
-  font-size: 36px;
-  font-weight: 700;
-  color: #ffffff;
-  display: block;
-  margin-bottom: 4px;
-}
-
-.result-type__score {
-  font-size: 26px;
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.result-badge {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 24px;
-  padding: 8px 20px;
-}
-
-.badge-text {
-  color: #ffffff;
-  font-size: 24px;
-}
-
-.result-features {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.feature-tag {
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 8px;
-  padding: 6px 16px;
-}
-
-.feature-text {
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 24px;
-}
-
-/* 打卡提醒 */
-.reminder-bar {
-  display: flex;
-  align-items: center;
-  background: #fff8ed;
-  border-radius: var(--radius-md);
-  padding: 20px 24px;
-  margin-bottom: 32px;
-  border: 1px solid #f5e6cc;
-}
-
-.reminder-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--color-warning);
-  margin-right: 12px;
-  flex-shrink: 0;
-}
-
-.reminder-text {
-  flex: 1;
-  font-size: 26px;
-  color: var(--color-text);
-}
-
-.reminder-action {
-  color: var(--color-primary);
-  font-size: 26px;
-  font-weight: 500;
-  flex-shrink: 0;
-}
-
-/* 快捷入口 */
-.section {
-  margin-bottom: 32px;
-}
-
-.section-title {
-  font-size: 32px;
-  font-weight: 600;
-  color: var(--color-text);
-  margin-bottom: 20px;
-}
-
-.quick-grid {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.quick-item {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: #ffffff;
-  border-radius: var(--radius-md);
-  padding: 28px 16px;
-  box-shadow: var(--shadow-sm);
-
-  &:active {
-    transform: scale(0.97);
-  }
-}
-
-.quick-icon {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  background: var(--color-bg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 12px;
-  font-size: 36px;
-}
-
-.quick-title {
-  font-size: 26px;
-  color: var(--color-text);
-  font-weight: 500;
+/* ============================================
+   底部留白
+   ============================================ */
+.footer-space {
+  height: 32px;
 }
