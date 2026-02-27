@@ -1,28 +1,29 @@
-/* 治未病 - 全局样式 */
-/* 中医水墨风配色方案 */
+/* 智慧中医康养平台 - 全局样式 */
+/* 清新绿色健康风配色方案 */
 
 page {
-  --color-primary: #8b5a2b;       /* 草本棕 */
-  --color-primary-light: #a67c52; /* 浅草本棕 */
-  --color-bg: #faf7f2;            /* 宣纸白 */
-  --color-bg-card: #ffffff;       /* 卡片白 */
-  --color-text: #1a1a2e;          /* 墨色 */
-  --color-text-secondary: #6b6b8a; /* 副文字 */
-  --color-text-light: #9e9eb8;    /* 浅文字 */
-  --color-border: #ede0cc;        /* 边框 */
-  --color-border-light: #f2e8d8;  /* 浅边框 */
-  --color-success: #2d9a64;       /* 青瓷绿 */
-  --color-danger: #c83232;        /* 朱砂红 */
-  --color-warning: #daa520;       /* 琥珀黄 */
+  --color-primary: #2daa6f;          /* 健康绿 */
+  --color-primary-deep: #1e8a55;     /* 深绿 */
+  --color-primary-light: #5dc48a;    /* 浅绿 */
+  --color-bg: #f4fbf7;               /* 浅薄荷白 */
+  --color-bg-card: #ffffff;
+  --color-text: #1a2e1a;             /* 深墨绿 */
+  --color-text-secondary: #5a7a65;   /* 灰绿 */
+  --color-text-light: #8aab95;
+  --color-border: #c8e6d4;
+  --color-border-light: #dff2e8;
+  --color-success: #2daa6f;
+  --color-danger: #ff6b6b;           /* 珊瑚红 */
+  --color-warning: #f9a825;          /* 暖黄 */
 
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
   --radius-xl: 24px;
 
-  --shadow-sm: 0 2px 8px rgba(139, 90, 43, 0.06);
-  --shadow-md: 0 4px 16px rgba(139, 90, 43, 0.1);
-  --shadow-lg: 0 8px 32px rgba(139, 90, 43, 0.12);
+  --shadow-sm: 0 2px 8px rgba(45, 170, 111, 0.08);
+  --shadow-md: 0 4px 16px rgba(45, 170, 111, 0.12);
+  --shadow-lg: 0 8px 32px rgba(45, 170, 111, 0.15);
 
   --spacing-xs: 8px;
   --spacing-sm: 12px;
