@@ -86,34 +86,34 @@
 }
 
 /* ============================================
-   体质评估卡 — 双状态
+   体质评估卡 — 双状态（绿色健康风）
    ============================================ */
 .assess-card {
   margin: 0 24px 20px;
-  border-radius: var(--radius-lg);
+  border-radius: 20px;
   padding: 28px;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-md);
 }
 
 /* 未评估 */
 .assess-card--empty {
   display: flex;
   align-items: center;
-  background: linear-gradient(135deg, #ffffff 0%, #faf5ed 100%);
-  border: 1.5px dashed rgba(139, 90, 43, 0.25);
+  background: linear-gradient(135deg, #ffffff 0%, #f0faf4 100%);
+  border: 1.5px dashed rgba(45, 170, 111, 0.3);
 }
 
 .assess-card__badge {
   width: 72px;
   height: 72px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #8b5a2b 0%, #a67c52 100%);
+  background: linear-gradient(135deg, #2daa6f 0%, #1e8a55 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   margin-right: 20px;
-  box-shadow: 0 4px 12px rgba(139, 90, 43, 0.25);
+  box-shadow: 0 4px 12px rgba(45, 170, 111, 0.3);
 }
 
 .assess-card__badge-text {
@@ -150,7 +150,7 @@
 
 /* 已评估 */
 .assess-card--result {
-  background: linear-gradient(135deg, #8b5a2b 0%, #6d4520 100%);
+  background: linear-gradient(135deg, #2daa6f 0%, #1e8a55 100%);
   position: relative;
   overflow: hidden;
 
@@ -159,10 +159,10 @@
     position: absolute;
     top: -30px;
     right: -30px;
-    width: 120px;
-    height: 120px;
+    width: 140px;
+    height: 140px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.06);
   }
 
   &::after {
@@ -170,10 +170,10 @@
     position: absolute;
     bottom: -20px;
     left: -20px;
-    width: 80px;
-    height: 80px;
+    width: 90px;
+    height: 90px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(255, 255, 255, 0.04);
   }
 }
 
@@ -186,7 +186,7 @@
 
 .result-label {
   font-size: 22px;
-  color: rgba(255, 255, 255, 0.65);
+  color: rgba(255, 255, 255, 0.7);
   display: block;
   margin-bottom: 6px;
 }
@@ -216,7 +216,7 @@
 
 .result-divider {
   height: 1px;
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.15);
   margin: 20px 0;
 }
 
@@ -234,20 +234,20 @@
 }
 
 .result-tag {
-  background: rgba(255, 255, 255, 0.13);
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 8px;
   padding: 6px 14px;
 }
 
 .result-tag__text {
-  color: rgba(255, 255, 255, 0.88);
+  color: rgba(255, 255, 255, 0.9);
   font-size: 22px;
 }
 
 .result-more {
   flex-shrink: 0;
   margin-left: 16px;
-  background: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.2);
   border-radius: 20px;
   padding: 6px 18px;
 }
