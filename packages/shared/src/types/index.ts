@@ -37,6 +37,10 @@ export type ConstitutionType =
 
 export type RiskLevel = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL'
 
+export type ServiceCategoryKey = 'MOXIBUSTION' | 'SANFU_PATCH' | 'TUINA' | 'MASSAGE' | 'ACUPUNCTURE' | 'HERBAL_DRINK' | 'OTHER'
+export type ContentTypeKey = 'SOLAR_TERM' | 'CONSTITUTION_GUIDE' | 'DIET_THERAPY' | 'EXERCISE_GUIDE' | 'KNOWLEDGE'
+export type ActivityStatusKey = 'DRAFT' | 'PUBLISHED' | 'ONGOING' | 'ENDED' | 'CANCELLED'
+
 export type FollowupStatus = 'PENDING' | 'COMPLETED' | 'MISSED' | 'CANCELLED'
 
 // 体质评估相关
