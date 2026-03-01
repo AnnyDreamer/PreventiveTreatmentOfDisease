@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>智慧中医康养平台 — 产品演示</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --ink-950: #0a0a0f;
+  --ink-900: #1a1a2e;
+  --ink-800: #2d2d44;
+  --ink-700: #3d3d5c;
+  --ink-500: #6b6b8a;
+  --ink-400: #8e8ea8;
+  --ink-300: #b4b4c8;
+  --ink-200: #d4d4e0;
+  --ink-100: #eaeaf0;
+  --herb-900: #2d1b0e;
+  --herb-800: #4a2c17;
+  --herb-700: #6b3f22;
+  --herb-600: #8b5a2b;
+  --herb-500: #a67c52;
+  --herb-400: #c4a882;
+  --herb-300: #dcc8a8;
+  --herb-200: #ede0cc;
+  --herb-100: #f5efe4;
+  --herb-50: #faf7f2;
+  --cinnabar-600: #b22222;
+  --cinnabar-500: #c83232;
+  --cinnabar-400: #dc5555;
+  --cinnabar-100: #fce8e8;
+  --celadon-700: #1a5c3a;
+  --celadon-600: #22784e;
+  --celadon-500: #2d9a64;
+  --celadon-400: #4cb882;
+  --celadon-100: #e6f7ee;
+  --amber-600: #b8860b;
+  --amber-500: #daa520;
+  --amber-400: #e8c040;
+  --amber-100: #fdf8e8;
+  --font-display: 'Noto Serif SC', 'SimSun', serif;
+  --font-body: 'Noto Sans SC', 'PingFang SC', sans-serif;
+}
+
+html, body { width: 100%; height: 100%; overflow: hidden; font-family: var(--font-body); background: var(--ink-950); color: var(--ink-900); }
+
+.deck { width: 100%; height: 100%; position: relative; }
+
+.slide {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+  padding: 50px 70px;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.7s ease, transform 0.7s ease;
+  transform: translateY(20px);
+  overflow: hidden;
+}
+.slide.active { opacity: 1; pointer-events: auto; transform: translateY(0); }
+
+/* Backgrounds */
+.bg-paper {
+  background: radial-gradient(ellipse at 20% 30%, rgba(166,124,82,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 70%, rgba(107,63,34,0.06) 0%, transparent 50%),
+    var(--herb-50);
+}
+.bg-ink {
+  background: radial-gradient(ellipse at 30% 20%, rgba(166,124,82,0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 80%, rgba(61,61,92,0.2) 0%, transparent 50%),
+    linear-gradient(135deg, var(--ink-950) 0%, #12121f 50%, var(--ink-900) 100%);
+  color: var(--herb-100);
+}
+.bg-herb {
+  background: radial-gradient(ellipse at 20% 80%, rgba(139,90,43,0.2) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(166,124,82,0.15) 0%, transparent 50%),
+    linear-gradient(160deg, var(--herb-900) 0%, #3a2210 50%, var(--herb-800) 100%);
+  color: var(--herb-100);
+}
+.bg-cinnabar {
+  background: radial-gradient(ellipse at 50% 50%, rgba(200,50,50,0.15) 0%, transparent 60%),
+    linear-gradient(135deg, var(--ink-950) 0%, #1a0a0a 100%);
+  color: var(--herb-100);
+}
+.bg-celadon {
+  background: radial-gradient(ellipse at 30% 70%, rgba(45,154,100,0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 30%, rgba(76,184,130,0.08) 0%, transparent 50%),
+    var(--herb-50);
+}
+.bg-deep {
+  background: radial-gradient(ellipse at 40% 40%, rgba(107,63,34,0.2) 0%, transparent 50%),
+    radial-gradient(ellipse at 60% 60%, rgba(45,27,14,0.3) 0%, transparent 50%),
+    linear-gradient(145deg, #0f0a06 0%, #1a1008 50%, #0d0906 100%);
+  color: var(--herb-100);
+}
+.bg-warm {
+  background: radial-gradient(ellipse at 30% 50%, rgba(218,165,32,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 30%, rgba(139,90,43,0.06) 0%, transparent 50%),
+    #fffdf8;
+}
+
+/* Typography */
+.font-display { font-family: var(--font-display); }
+h1, h2, h3 { font-family: var(--font-display); }
+.title-hero { font-size: clamp(48px, 7vw, 96px); font-weight: 900; line-height: 1.1; letter-spacing: 0.08em; }
+.title-section { font-size: clamp(32px, 4vw, 56px); font-weight: 700; line-height: 1.2; }
+.title-sub { font-size: clamp(18px, 2.2vw, 28px); font-weight: 600; line-height: 1.4; }
+.text-body { font-size: clamp(15px, 1.5vw, 20px); line-height: 1.8; font-weight: 300; }
+.text-sm { font-size: clamp(13px, 1.3vw, 17px); line-height: 1.7; }
+.text-caption { font-size: clamp(12px, 1.1vw, 15px); line-height: 1.6; }
+.text-xs { font-size: clamp(11px, 0.9vw, 13px); line-height: 1.5; }
+.text-label { font-size: clamp(11px, 1vw, 14px); font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; }
+
+/* Colors */
+.text-herb { color: var(--herb-500); }
+.text-herb-light { color: var(--herb-300); }
+.text-herb-dark { color: var(--herb-700); }
+.text-ink-light { color: var(--ink-500); }
+.text-ink-muted { color: var(--ink-400); }
+.text-cinnabar { color: var(--cinnabar-500); }
+.text-celadon { color: var(--celadon-500); }
+
+/* Layout */
+.flex-center { display: flex; justify-content: center; align-items: center; }
+.flex-col { flex-direction: column; }
+.gap-xs { gap: 8px; }
+.gap-sm { gap: 12px; }
+.gap-md { gap: 24px; }
+.gap-lg { gap: 36px; }
+.text-center { text-align: center; }
+.w-full { width: 100%; }
+.max-w-5xl { max-width: 1100px; }
+.max-w-6xl { max-width: 1300px; }
+
+/* Decorative */
+.ink-stamp {
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 3px solid var(--cinnabar-500); border-radius: 8px;
+  font-family: var(--font-display); font-weight: 900; color: var(--cinnabar-500);
+  transform: rotate(-8deg); position: relative;
+}
+.ink-stamp::after {
+  content: ''; position: absolute; inset: -1px;
+  border: 1px solid rgba(200,50,50,0.3); border-radius: 10px; transform: rotate(2deg);
+}
+.divider { width: 80px; height: 2px; background: linear-gradient(90deg, transparent, var(--herb-400), transparent); }
+.divider-light { width: 80px; height: 2px; background: linear-gradient(90deg, transparent, var(--herb-300), transparent); }
+
+/* Cards */
+.card {
+  background: rgba(255,255,255,0.88); backdrop-filter: blur(10px);
+  border: 1px solid var(--herb-200); border-radius: 14px;
+  padding: 28px; box-shadow: 0 4px 20px rgba(139,90,43,0.08);
+}
+.card-dark {
+  background: rgba(26,26,46,0.6); backdrop-filter: blur(10px);
+  border: 1px solid rgba(166,124,82,0.2); border-radius: 14px; padding: 28px;
+}
+.card-feature {
+  background: rgba(255,255,255,0.92); border: 1px solid var(--herb-200);
+  border-radius: 16px; padding: 28px 24px; text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card-feature:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(139,90,43,0.1); }
+
+.icon-circle {
+  width: 56px; height: 56px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; margin: 0 auto 12px;
+}
+.badge {
+  display: inline-flex; padding: 3px 12px; border-radius: 20px;
+  font-size: 12px; font-weight: 500;
+}
+.badge-herb { background: var(--herb-100); color: var(--herb-700); border: 1px solid var(--herb-200); }
+.badge-cinnabar { background: var(--cinnabar-100); color: var(--cinnabar-600); }
+.badge-celadon { background: var(--celadon-100); color: var(--celadon-600); }
+.badge-amber { background: var(--amber-100); color: var(--amber-600); }
+
+/* Grids */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+.grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 18px; }
+.grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; width: 100%; max-width: 1200px; }
+
+/* Stat */
+.stat-value { font-family: var(--font-display); font-size: clamp(28px, 3.5vw, 48px); font-weight: 900; line-height: 1; }
+.stat-label { font-size: 13px; color: var(--ink-500); margin-top: 6px; }
+
+/* Bar chart */
+.bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+.bar-label { width: 56px; font-size: 12px; text-align: right; color: var(--ink-500); flex-shrink: 0; }
+.bar-track { flex: 1; height: 22px; background: rgba(237,224,204,0.5); border-radius: 11px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 11px; display: flex; align-items: center; padding-left: 8px; font-size: 11px; color: white; font-weight: 600; }
+
+/* Flow arrow */
+.flow-arrow { font-size: 20px; color: var(--herb-400); display: flex; align-items: center; justify-content: center; }
+
+/* Phone mockup */
+.phone-mock {
+  width: 220px; border-radius: 24px; overflow: hidden;
+  border: 6px solid var(--ink-800); background: var(--herb-50);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+}
+.phone-mock .phone-header {
+  background: var(--herb-50); padding: 10px 16px 8px;
+  border-bottom: 1px solid var(--herb-200);
+  font-size: 13px; font-weight: 600; text-align: center; color: var(--ink-900);
+}
+.phone-mock .phone-body { padding: 12px; min-height: 340px; }
+
+/* Chat bubble */
+.chat-bubble {
+  padding: 10px 14px; border-radius: 14px; font-size: 12px;
+  line-height: 1.6; max-width: 85%; margin-bottom: 8px;
+}
+.chat-user {
+  background: var(--herb-600); color: white; margin-left: auto;
+  border-bottom-right-radius: 4px;
+}
+.chat-ai {
+  background: white; color: var(--ink-900); border: 1px solid var(--herb-200);
+  border-bottom-left-radius: 4px;
+}
+
+/* Dashboard mock */
+.dash-mock {
+  border-radius: 12px; overflow: hidden;
+  border: 2px solid rgba(166,124,82,0.3); background: var(--herb-50);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+}
+.dash-header {
+  background: white; padding: 8px 16px;
+  border-bottom: 1px solid var(--herb-200);
+  display: flex; align-items: center; gap: 8px;
+}
+.dash-dot { width: 8px; height: 8px; border-radius: 50%; }
+.dash-body { padding: 16px; display: grid; gap: 12px; }
+
+/* Mini stat card in mock */
+.mini-stat {
+  background: white; border-radius: 8px; padding: 10px 14px;
+  border: 1px solid var(--herb-200);
+}
+.mini-stat-val { font-family: var(--font-display); font-size: 20px; font-weight: 700; }
+.mini-stat-lbl { font-size: 10px; color: var(--ink-500); }
+
+/* Step circle */
+.step-num {
+  width: 36px; height: 36px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-weight: 700; font-size: 16px;
+  flex-shrink: 0;
+}
+
+/* Item with icon */
+.item-row {
+  display: flex; gap: 14px; align-items: flex-start;
+}
+.item-icon {
+  width: 40px; height: 40px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; flex-shrink: 0;
+}
+
+/* Alert card */
+.alert-card {
+  display: flex; gap: 12px; align-items: center;
+  padding: 12px 16px; border-radius: 10px; margin-bottom: 8px;
+}
+
+/* Quote */
+.quote {
+  font-family: var(--font-display); font-size: clamp(18px, 2.2vw, 28px);
+  font-style: italic; line-height: 1.6; position: relative;
+  padding-left: 24px; border-left: 3px solid var(--herb-400);
+}
+
+/* Animations */
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes scaleIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+@keyframes slideInLeft { from { opacity: 0; transform: translateX(-40px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes slideInRight { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+
+.slide.active .anim-up { animation: fadeInUp 0.8s ease forwards; }
+.slide.active .anim-up-d1 { animation: fadeInUp 0.8s 0.12s ease forwards; opacity: 0; }
+.slide.active .anim-up-d2 { animation: fadeInUp 0.8s 0.24s ease forwards; opacity: 0; }
+.slide.active .anim-up-d3 { animation: fadeInUp 0.8s 0.36s ease forwards; opacity: 0; }
+.slide.active .anim-up-d4 { animation: fadeInUp 0.8s 0.48s ease forwards; opacity: 0; }
+.slide.active .anim-up-d5 { animation: fadeInUp 0.8s 0.6s ease forwards; opacity: 0; }
+.slide.active .anim-fade { animation: fadeIn 1s ease forwards; }
+.slide.active .anim-scale { animation: scaleIn 0.6s ease forwards; }
+.slide.active .anim-left { animation: slideInLeft 0.8s ease forwards; }
+.slide.active .anim-left-d1 { animation: slideInLeft 0.8s 0.15s ease forwards; opacity: 0; }
+.slide.active .anim-left-d2 { animation: slideInLeft 0.8s 0.3s ease forwards; opacity: 0; }
+.slide.active .anim-left-d3 { animation: slideInLeft 0.8s 0.45s ease forwards; opacity: 0; }
+.slide.active .anim-right { animation: slideInRight 0.8s ease forwards; }
+.slide.active .anim-right-d1 { animation: slideInRight 0.8s 0.15s ease forwards; opacity: 0; }
+
+/* Progress & Nav */
+.progress-bar { position: fixed; bottom: 0; left: 0; height: 3px; background: linear-gradient(90deg, var(--herb-600), var(--cinnabar-500)); transition: width 0.5s ease; z-index: 100; }
+.page-num { position: fixed; bottom: 16px; right: 24px; font-family: var(--font-display); font-size: 13px; color: var(--ink-400); z-index: 100; opacity: 0.6; }
+.nav-hint { position: fixed; bottom: 16px; left: 24px; font-size: 11px; color: var(--ink-400); z-index: 100; opacity: 0.4; }
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+<!-- ==================== 1. 封面 ==================== -->
+<div class="slide bg-ink active">
+  <div class="flex-center flex-col gap-lg text-center" style="max-width: 900px;">
+    <div class="anim-scale">
+      <div class="ink-stamp" style="width: 100px; height: 100px; font-size: 28px;">智慧康养</div>
+    </div>
+    <div class="anim-up-d1">
+      <h1 class="title-hero" style="color: var(--herb-200);">智慧中医康养平台</h1>
+      <p class="title-sub" style="color: var(--herb-400); margin-top: 8px; font-weight: 400; letter-spacing: 0.12em;">AI驱动的中医健康管理解决方案</p>
+    </div>
+    <div class="divider-light anim-up-d2"></div>
+    <p class="text-body anim-up-d2" style="color: var(--ink-400); max-width: 600px;">
+      融合中医体质辨识智慧与现代AI技术<br>为医院打造全链路中医康养管理解决方案
+    </p>
+    <div class="anim-up-d3" style="display: flex; gap: 14px; margin-top: 8px;">
+      <span class="badge badge-herb">中医 + AI</span>
+      <span class="badge badge-herb">B2B2C</span>
+      <span class="badge badge-herb">全链路管理</span>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 2. 为什么做 ==================== -->
+<div class="slide bg-paper">
+  <div class="flex-center flex-col gap-md max-w-5xl">
+    <div class="anim-up text-center">
+      <p class="text-label text-herb-dark" style="margin-bottom: 6px;">WHY WE BUILD THIS</p>
+      <h2 class="title-section" style="color: var(--ink-900);">为什么做这件事？</h2>
+    </div>
+    <div class="divider anim-up-d1"></div>
+    <div class="grid-3 w-full anim-up-d2">
+      <div class="card-feature">
+        <div class="icon-circle" style="background: var(--cinnabar-100);">📊</div>
+        <h3 style="font-size: 18px; margin-bottom: 6px;">慢病困局</h3>
+        <p class="text-xs text-ink-light">中国慢性病患者<strong style="color: var(--cinnabar-500);">超4亿</strong>，占总死亡人数88.5%<br>但慢病管理依从性<strong style="color: var(--cinnabar-500);">不足30%</strong><br>复诊率持续走低</p>
+      </div>
+      <div class="card-feature">
+        <div class="icon-circle" style="background: var(--herb-100);">🏥</div>
+        <h3 style="font-size: 18px; margin-bottom: 6px;">医院痛点</h3>
+        <p class="text-xs text-ink-light">患者"看完就走"<br><strong style="color: var(--herb-700);">院外管理完全断裂</strong><br>医生无法追踪治疗效果<br>康养科创收能力弱</p>
+      </div>
+      <div class="card-feature">
+        <div class="icon-circle" style="background: var(--celadon-100);">📋</div>
+        <h3 style="font-size: 18px; margin-bottom: 6px;">政策红利</h3>
+        <p class="text-xs text-ink-light">国家卫健委《AI应用场景指引》<br>明确 <strong style="color: var(--celadon-600);">"AI+中医药"6大场景</strong><br>智慧康养管理、智能随访<br>被列为重点应用方向</p>
+      </div>
+    </div>
+    <div class="quote anim-up-d3" style="font-size: 20px; margin-top: 10px;">
+      上工治未病，中工治欲病，下工治已病 —— 《黄帝内经》
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 3. 商业模式 ==================== -->
+<div class="slide bg-ink">
+  <div class="flex-center flex-col gap-md max-w-5xl">
+    <div class="anim-up text-center">
+      <p class="text-label text-herb-light" style="margin-bottom: 6px;">BUSINESS MODEL</p>
+      <h2 class="title-section" style="color: var(--herb-200);">商业模式与目标市场</h2>
+    </div>
+    <div class="divider-light anim-up-d1"></div>
+    <!-- 商业闭环 -->
+    <div class="anim-up-d2" style="display: flex; align-items: center; gap: 0; width: 100%; max-width: 1000px; margin-top: 10px;">
+      <div style="flex:1; text-align: center; padding: 20px;">
+        <div style="font-size: 32px; margin-bottom: 8px;">🏥</div>
+        <p style="font-size: 15px; color: var(--herb-200); font-weight: 600;">医院买单</p>
+        <p class="text-xs" style="color: var(--ink-400);">SaaS订阅 / 定制部署</p>
+      </div>
+      <div style="font-size: 24px; color: var(--herb-400);">→</div>
+      <div style="flex:1; text-align: center; padding: 20px;">
+        <div style="font-size: 32px; margin-bottom: 8px;">👥</div>
+        <p style="font-size: 15px; color: var(--herb-200); font-weight: 600;">患者使用</p>
+        <p class="text-xs" style="color: var(--ink-400);">微信小程序零门槛</p>
+      </div>
+      <div style="font-size: 24px; color: var(--herb-400);">→</div>
+      <div style="flex:1; text-align: center; padding: 20px;">
+        <div style="font-size: 32px; margin-bottom: 8px;">🤖</div>
+        <p style="font-size: 15px; color: var(--herb-200); font-weight: 600;">AI提升粘性</p>
+        <p class="text-xs" style="color: var(--ink-400);">个性化方案+日常互动</p>
+      </div>
+      <div style="font-size: 24px; color: var(--herb-400);">→</div>
+      <div style="flex:1; text-align: center; padding: 20px;">
+        <div style="font-size: 32px; margin-bottom: 8px;">🔄</div>
+        <p style="font-size: 15px; color: var(--herb-200); font-weight: 600;">提高复诊率</p>
+        <p class="text-xs" style="color: var(--ink-400);">智能随访+复诊引导</p>
+      </div>
+      <div style="font-size: 24px; color: var(--herb-400);">→</div>
+      <div style="flex:1; text-align: center; padding: 20px;">
+        <div style="font-size: 32px; margin-bottom: 8px;">💰</div>
+        <p style="font-size: 15px; color: var(--amber-400); font-weight: 600;">医院增收</p>
+        <p class="text-xs" style="color: var(--ink-400);">形成正向飞轮</p>
+      </div>
+    </div>
+    <!-- 数据 -->
+    <div class="grid-3 w-full anim-up-d3" style="margin-top: 10px;">
+      <div class="card-dark text-center">
+        <div class="stat-value" style="color: var(--herb-200);">3,200<span style="font-size: 20px; color: var(--herb-400);">亿</span></div>
+        <p class="text-xs" style="color: var(--ink-400); margin-top: 4px;">中医健康管理市场规模(2025)</p>
+      </div>
+      <div class="card-dark text-center">
+        <div class="stat-value" style="color: var(--celadon-400);">3.5<span style="font-size: 20px; color: var(--celadon-400);">万+</span></div>
+        <p class="text-xs" style="color: var(--ink-400); margin-top: 4px;">中医类医疗机构</p>
+      </div>
+      <div class="card-dark text-center">
+        <div class="stat-value" style="color: var(--amber-400);">76.7<span style="font-size: 20px; color: var(--amber-400);">%</span></div>
+        <p class="text-xs" style="color: var(--ink-400); margin-top: 4px;">三级中医院治未病科设置率</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 4. 产品架构 ==================== -->
+<div class="slide bg-paper">
+  <div class="flex-center flex-col gap-md max-w-6xl">
+    <div class="anim-up text-center">
+      <p class="text-label text-herb-dark" style="margin-bottom: 6px;">PRODUCT ARCHITECTURE</p>
+      <h2 class="title-section" style="color: var(--ink-900);">产品架构总览</h2>
+    </div>
+    <div class="divider anim-up-d1"></div>
+    <div class="anim-up-d2" style="display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 20px; align-items: center; width: 100%; max-width: 1000px;">
+      <div class="card" style="text-align: center; border-color: var(--celadon-500); border-width: 2px;">
+        <div style="font-size: 32px; margin-bottom: 6px;">📱</div>
+        <h3 style="font-size: 16px; color: var(--ink-900); margin-bottom: 4px;">患者端</h3>
+        <p class="text-xs" style="color: var(--celadon-600); font-weight: 500;">微信小程序</p>
+        <div style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 4px; justify-content: center;">
+          <span class="badge badge-celadon" style="font-size: 10px;">体质评估</span>
+          <span class="badge badge-celadon" style="font-size: 10px;">养生方案</span>
+          <span class="badge badge-celadon" style="font-size: 10px;">健康日记</span>
+          <span class="badge badge-celadon" style="font-size: 10px;">AI助手</span>
+          <span class="badge badge-celadon" style="font-size: 10px;">随访反馈</span>
+        </div>
+      </div>
+      <div class="flow-arrow">⟷</div>
+      <div class="card" style="text-align: center; border-color: var(--herb-600); border-width: 2px;">
+        <div style="font-size: 32px; margin-bottom: 6px;">🧠</div>
+        <h3 style="font-size: 16px; color: var(--ink-900); margin-bottom: 4px;">AI 智能中枢</h3>
+        <p class="text-xs" style="color: var(--herb-600); font-weight: 500;">通义千问 + 中医知识库</p>
+        <div style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 4px; justify-content: center;">
+          <span class="badge badge-herb" style="font-size: 10px;">体质辨识</span>
+          <span class="badge badge-herb" style="font-size: 10px;">方案生成</span>
+          <span class="badge badge-herb" style="font-size: 10px;">健康问答</span>
+          <span class="badge badge-herb" style="font-size: 10px;">随访分析</span>
+          <span class="badge badge-herb" style="font-size: 10px;">风险预警</span>
+        </div>
+      </div>
+      <div class="flow-arrow">⟷</div>
+      <div class="card" style="text-align: center; border-color: var(--cinnabar-500); border-width: 2px;">
+        <div style="font-size: 32px; margin-bottom: 6px;">💻</div>
+        <h3 style="font-size: 16px; color: var(--ink-900); margin-bottom: 4px;">医生端</h3>
+        <p class="text-xs" style="color: var(--cinnabar-500); font-weight: 500;">Web 管理后台</p>
+        <div style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 4px; justify-content: center;">
+          <span class="badge badge-cinnabar" style="font-size: 10px;">数据看板</span>
+          <span class="badge badge-cinnabar" style="font-size: 10px;">患者画像</span>
+          <span class="badge badge-cinnabar" style="font-size: 10px;">随访管理</span>
+          <span class="badge badge-cinnabar" style="font-size: 10px;">风险预警</span>
+          <span class="badge badge-cinnabar" style="font-size: 10px;">统计报表</span>
+        </div>
+      </div>
+    </div>
+    <p class="text-xs text-ink-muted anim-up-d3 text-center" style="max-width: 800px; margin-top: 8px;">
+      患者零安装使用微信小程序 → AI中枢自动分析生成方案 → 医生Web后台实时监控管理<br>三端数据实时同步，形成完整的院外健康管理闭环
+    </p>
+  </div>
+</div>
+
+<!-- ==================== 5. 患者端：能做什么 ==================== -->
+<div class="slide bg-celadon">
+  <div class="flex-center flex-col gap-md max-w-5xl">
+    <div class="anim-up text-center">
+      <p class="text-label text-celadon" style="margin-bottom: 6px;">PATIENT EXPERIENCE</p>
+      <h2 class="title-section" style="color: var(--ink-900);">患者端：我能做什么？</h2>
+      <p class="text-sm text-ink-light" style="margin-top: 6px;">微信扫码即用，零安装、零学习成本</p>
+    </div>
+    <div class="divider anim-up-d1"></div>
+    <div class="grid-5 w-full anim-up-d2">
+      <div class="card-feature" style="padding: 20px 14px;">
+        <div style="font-size: 28px; margin-bottom: 8px;">📋</div>
+        <h4 style="font-size: 14px; color: var(--ink-900); margin-bottom: 6px;">体质评估</h4>
+        <p class="text-xs text-ink-light">67题标准问卷<br>10分钟完成<br>即时出具报告</p>
+      </div>
+      <div class="card-feature" style="padding: 20px 14px;">
+        <div style="font-size: 28px; margin-bottom: 8px;">🍵</div>
+        <h4 style="font-size: 14px; color: var(--ink-900); margin-bottom: 6px;">养生方案</h4>
+        <p class="text-xs text-ink-light">饮食·运动·起居<br>情志·穴位<br>五维个性化方案</p>
+      </div>
+      <div class="card-feature" style="padding: 20px 14px;">
+        <div style="font-size: 28px; margin-bottom: 8px;">📔</div>
+        <h4 style="font-size: 14px; color: var(--ink-900); margin-bottom: 6px;">健康日记</h4>
+        <p class="text-xs text-ink-light">睡眠·饮食·运动<br>情绪四维打卡<br>趋势追踪可视化</p>
+      </div>
+      <div class="card-feature" style="padding: 20px 14px;">
+        <div style="font-size: 28px; margin-bottom: 8px;">🤖</div>
+        <h4 style="font-size: 14px; color: var(--ink-900); margin-bottom: 6px;">AI助手</h4>
+        <p class="text-xs text-ink-light">7×24小时<br>懂你体质的<br>中医养生顾问</p>
+      </div>
+      <div class="card-feature" style="padding: 20px 14px;">
+        <div style="font-size: 28px; margin-bottom: 8px;">🔔</div>
+        <h4 style="font-size: 14px; color: var(--ink-900); margin-bottom: 6px;">随访提醒</h4>
+        <p class="text-xs text-ink-light">定期健康反馈<br>复诊智能引导<br>不漏一次随访</p>
+      </div>
+    </div>
+    <!-- 用户旅程 -->
+    <div class="card anim-up-d3" style="width: 100%; padding: 20px 28px;">
+      <p class="text-xs" style="color: var(--herb-700); font-weight: 600; margin-bottom: 10px;">📍 典型用户旅程</p>
+      <div style="display: flex; align-items: center; gap: 0; font-size: 12px;">
+        <div style="flex:1; text-align: center; padding: 8px; background: var(--celadon-100); border-radius: 8px;">
+          <strong>微信扫码</strong><br><span style="color: var(--ink-500);">关注公众号/扫科室二维码</span>
+        </div>
+        <span style="padding: 0 6px; color: var(--herb-400);">→</span>
+        <div style="flex:1; text-align: center; padding: 8px; background: var(--herb-100); border-radius: 8px;">
+          <strong>10分钟评估</strong><br><span style="color: var(--ink-500);">67题标准问卷</span>
+        </div>
+        <span style="padding: 0 6px; color: var(--herb-400);">→</span>
+        <div style="flex:1; text-align: center; padding: 8px; background: var(--amber-100); border-radius: 8px;">
+          <strong>AI出报告</strong><br><span style="color: var(--ink-500);">体质+方案秒出</span>
+        </div>
+        <span style="padding: 0 6px; color: var(--herb-400);">→</span>
+        <div style="flex:1; text-align: center; padding: 8px; background: var(--herb-100); border-radius: 8px;">
+          <strong>每日打卡</strong><br><span style="color: var(--ink-500);">记录+AI陪伴</span>
+        </div>
+        <span style="padding: 0 6px; color: var(--herb-400);">→</span>
+        <div style="flex:1; text-align: center; padding: 8px; background: var(--cinnabar-100); border-radius: 8px;">
+          <strong>随访复诊</strong><br><span style="color: var(--ink-500);">带数据回院复查</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 6. 患者端：体质辨识深度 ==================== -->
+<div class="slide bg-paper">
+  <div class="flex-center flex-col gap-md max-w-5xl">
+    <div class="anim-up text-center">
+      <p class="text-label text-herb-dark" style="margin-bottom: 6px;">CONSTITUTION ASSESSMENT</p>
+      <h2 class="title-section" style="color: var(--ink-900);">AI 中医体质辨识</h2>
+      <p class="text-sm text-ink-light">标准化评分 + AI增强分析 = 双轨制确保准确</p>
+    </div>
+    <div class="split anim-up-d1" style="max-width: 1100px; margin-top: 8px;">
+      <div>
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+          <div class="item-row anim-left">
+            <div class="step-num" style="background: var(--celadon-100); color: var(--celadon-600);">1</div>
+            <div>
+              <h4 style="font-size: 15px; color: var(--ink-900); font-weight: 600;">国标问卷</h4>
+              <p class="text-xs text-ink-light">《中医体质分类与判定》标准 · 9种体质 · 67题 · 5级评分<br>每种体质7-8题，覆盖形体、寒热、精神、情志等维度</p>
+            </div>
+          </div>
+          <div class="item-row anim-left-d1">
+            <div class="step-num" style="background: var(--herb-100); color: var(--herb-700);">2</div>
+            <div>
+              <h4 style="font-size: 15px; color: var(--ink-900); font-weight: 600;">算法精确评分</h4>
+              <p class="text-xs text-ink-light">转化分公式：(原始分-条目数)/(条目数×4)×100<br>平和质≥60且偏颇＜30为平和；偏颇≥30为该体质</p>
+            </div>
+          </div>
+          <div class="item-row anim-left-d2">
+            <div class="step-num" style="background: var(--cinnabar-100); color: var(--cinnabar-600);">3</div>
+            <div>
+              <h4 style="font-size: 15px; color: var(--ink-900); font-weight: 600;">AI 智能解读</h4>
+              <p class="text-xs text-ink-light">通义千问分析体质特征、健康风险、调理方向<br>兼夹体质交互影响分析，给出可执行建议</p>
+            </div>
+          </div>
+          <div class="item-row anim-left-d3">
+            <div class="step-num" style="background: var(--amber-100); color: var(--amber-600);">4</div>
+            <div>
+              <h4 style="font-size: 15px; color: var(--ink-900); font-weight: 600;">可视化报告</h4>
+              <p class="text-xs text-ink-light">9体质得分柱状图 + 主/兼夹体质标签<br>特征描述 + 易患疾病 + 方案一键生成</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card anim-right" style="padding: 22px;">
+        <h4 class="font-display" style="font-size: 14px; color: var(--ink-900); margin-bottom: 14px;">📋 评估结果示例 — 张伟，男，45岁</h4>
+        <div class="bar-row"><span class="bar-label">平和质</span><div class="bar-track"><div class="bar-fill" style="width: 35%; background: var(--celadon-500);">35</div></div></div>
+        <div class="bar-row"><span class="bar-label" style="color: var(--herb-700); font-weight: 700;">气虚质</span><div class="bar-track"><div class="bar-fill" style="width: 69%; background: var(--herb-600);">68.8 ★</div></div></div>
+        <div class="bar-row"><span class="bar-label">阳虚质</span><div class="bar-track"><div class="bar-fill" style="width: 43%; background: var(--amber-500);">42.9</div></div></div>
+        <div class="bar-row"><span class="bar-label">阴虚质</span><div class="bar-track"><div class="bar-fill" style="width: 19%; background: var(--ink-400);">18.8</div></div></div>
+        <div class="bar-row"><span class="bar-label">痰湿质</span><div class="bar-track"><div class="bar-fill" style="width: 25%; background: var(--ink-400);">25.0</div></div></div>
+        <div class="bar-row"><span class="bar-label">湿热质</span><div class="bar-track"><div class="bar-fill" style="width: 14%; background: var(--ink-300);">14.3</div></div></div>
+        <div class="bar-row"><span class="bar-label">血瘀质</span><div class="bar-track"><div class="bar-fill" style="width: 21%; background: var(--ink-400);">21.4</div></div></div>
+        <div class="bar-row"><span class="bar-label">气郁质</span><div class="bar-track"><div class="bar-fill" style="width: 18%; background: var(--ink-300);">17.9</div></div></div>
+        <div class="bar-row"><span class="bar-label">特禀质</span><div class="bar-track"><div class="bar-fill" style="width: 11%; background: var(--ink-300);">10.7</div></div></div>
+        <div style="margin-top: 12px; padding: 10px 12px; background: var(--herb-100); border-radius: 8px; border-left: 3px solid var(--herb-600);">
+          <p style="font-size: 11px; color: var(--herb-700); line-height: 1.6;"><strong>🤖 AI分析：</strong>气虚质为主(68.8分)，兼夹阳虚质(42.9分)。主要表现为容易疲劳、气短懒言、免疫力较低。秋冬季节尤需注意保暖补气。建议从健脾益气入手，循序渐进改善体质。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 7. 患者端：养生方案详解 ==================== -->
+<div class="slide bg-herb">
+  <div class="flex-center flex-col gap-md max-w-5xl">
+    <div class="anim-up text-center">
+      <p class="text-label" style="color: var(--herb-300); margin-bottom: 6px;">HEALTH PLAN</p>
+      <h2 class="title-section" style="color: var(--herb-100);">个性化养生方案</h2>
+      <p class="text-sm" style="color: var(--herb-300);">不是笼统的"多喝水"，而是可以照着做的具体方案</p>
+    </div>
+    <div class="divider-light anim-up-d1"></div>
+    <div class="grid-5 w-full anim-up-d2" style="margin-top: 8px;">
+      <div class="card-dark" style="text-align: center; padding: 20px 14px;">
+        <div style="font-size: 26px; margin-bottom: 8px;">🥘</div>
+        <h4 style="font-size: 14px; color: var(--herb-200); margin-bottom: 8px;">饮食调养</h4>
+        <p style="font-size: 11px; color: var(--ink-400); line-height: 1.6;">
+          <span style="color: var(--celadon-400);">✓ 推荐</span> 山药粥、黄芪鸡汤<br>
+          <span style="color: var(--cinnabar-400);">✗ 避免</span> 生冷寒凉、油腻<br>
+          <span style="color: var(--herb-300);">☕ 代茶饮</span> 黄芪+枸杞+红枣
+        </p>
+      </div>
+      <div class="card-dark" style="text-align: center; padding: 20px 14px;">
+        <div style="font-size: 26px; margin-bottom: 8px;">🏃</div>
+        <h4 style="font-size: 14px; color: var(--herb-200); margin-bottom: 8px;">运动指导</h4>
+        <p style="font-size: 11px; color: var(--ink-400); line-height: 1.6;">
+          八段锦 · 太极拳 · 散步<br>
+          每次30分钟 · 每周5次<br>
+          避免剧烈运动和大汗
+        </p>
+      </div>
+      <div class="card-dark" style="text-align: center; padding: 20px 14px;">
+        <div style="font-size: 26px; margin-bottom: 8px;">🌙</div>
+        <h4 style="font-size: 14px; color: var(--herb-200); margin-bottom: 8px;">起居调摄</h4>
+        <p style="font-size: 11px; color: var(--ink-400); line-height: 1.6;">
+          早睡早起 · 23点前入睡<br>
+          注意保暖 · 避免受风<br>
+          午休15-30分钟
+        </p>
+      </div>
+      <div class="card-dark" style="text-align: center; padding: 20px 14px;">
+        <div style="font-size: 26px; margin-bottom: 8px;">🧘</div>
+        <h4 style="font-size: 14px; color: var(--herb-200); margin-bottom: 8px;">情志养护</h4>
+        <p style="font-size: 11px; color: var(--ink-400); line-height: 1.6;">
+          保持乐观心态<br>
+          避免思虑过度<br>
+          可听古琴、做冥想
+        </p>
+      </div>
+      <div class="card-dark" style="text-align: center; padding: 20px 14px;">
+        <div style="font-size: 26px; margin-bottom: 8px;">📍</div>
+        <h4 style="font-size: 14px; color: var(--herb-200); margin-bottom: 8px;">穴位保健</h4>
+        <p style="font-size: 11px; color: var(--ink-400); line-height: 1.6;">
+          足三里 · 补气健脾<br>
+          气海 · 益气培元<br>
+          每穴按揉3-5分钟
+        </p>
+      </div>
+    </div>
+    <div class="card-dark anim-up-d3 text-center" style="width: 100%; max-width: 800px; padding: 16px 24px;">
+      <p style="font-size: 13px; color: var(--herb-300); line-height: 1.7;">
+        💡 <strong>方案特点</strong>：AI基于中医知识库 + 个人体质类型自动生成，不是千人一面的模板——<br>
+        同样是气虚质，45岁上班族和65岁退休人群，获得的方案细节完全不同
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 8. 患者端：日记与AI助手 ==================== -->
+<div class="slide bg-paper">
+  <div class="flex-center flex-col gap-md max-w-5xl">
+    <div class="anim-up text-center">
+      <p class="text-label text-herb-dark" style="margin-bottom: 6px;">DAILY ENGAGEMENT</p>
+      <h2 class="title-section" style="color: var(--ink-900);">日常互动：日记 + AI 助手</h2>
+    </div>
+    <div class="split anim-up-d1" style="max-width: 1100px; gap: 40px;">
+      <!-- 健康日记 -->
+      <div>
+        <h3 style="font-size: 20px; color: var(--herb-700); margin-bottom: 16px; font-family: var(--font-display);">📔 健康日记</h3>
+        <div style="display: flex; flex-direction: column; gap: 14px;">
+          <div class="item-row">
+            <div class="item-icon" style="background: var(--herb-100);">🛏️</div>
+            <div>
+              <h4 style="font-size: 14px; font-weight: 600;">睡眠记录</h4>
+              <p class="text-xs text-ink-light">时长 + 质量评分(1-5星)，追踪入睡时间变化</p>
+            </div>
+          </div>
+          <div class="item-row">
+            <div class="item-icon" style="background: var(--amber-100);">😊</div>
+            <div>
+              <h4 style="font-size: 14px; font-weight: 600;">情绪打卡</h4>
+              <p class="text-xs text-ink-light">5级emoji评分，发现情绪波动规律</p>
+            </div>
+          </div>
+          <div class="item-row">
+            <div class="item-icon" style="background: var(--celadon-100);">🏃</div>
+            <div>
+              <h4 style="font-size: 14px; font-weight: 600;">运动记录</h4>
+              <p class="text-xs text-ink-light">时长 + 类型(散步/太极/八段锦...)，对比方案建议</p>
+            </div>
+          </div>
+          <div class="item-row">
+            <div class="item-icon" style="background: var(--cinnabar-100);">💊</div>
+            <div>
+              <h4 style="font-size: 14px; font-weight: 600;">症状记录</h4>
+              <p class="text-xs text-ink-light">16种常见症状标签多选，文字备注补充</p>
+            </div>
+          </div>
+        </div>
+        <div class="card" style="margin-top: 14px; padding: 14px 16px;">
+          <p style="font-size: 12px; color: var(--celadon-600); font-weight: 600;">🔥 连续打卡 28 天</p>
+          <p class="text-xs text-ink-light" style="margin-top: 4px;">日历热力图可视化 · 打卡数据自动同步给主治医生</p>
+        </div>
+      </div>
+      <!-- AI助手 -->
+      <div>
+        <h3 style="font-size: 20px; color: var(--herb-700); margin-bottom: 16px; font-family: var(--font-display);">🤖 AI 中医助手</h3>
+        <div class="card" style="padding: 16px; background: var(--herb-50);">
+          <div class="chat-bubble chat-user">黄芪泡水每次放多少克合适？我是气虚体质。</div>
+          <div class="chat-bubble chat-ai">根据您的气虚质体质，建议黄芪泡水每次用<strong>10-15克</strong>，搭配3-5颗红枣和几粒枸杞效果更佳。<br><br>⏰ 建议上午饮用，一周喝5天休2天，让身体有节律地调养。<br><br>⚠️ 如果您有感冒发热症状，暂停饮用。</div>
+          <div class="chat-bubble chat-user">最近总觉得提不起劲</div>
+          <div class="chat-bubble chat-ai">结合您近一周的日记记录，睡眠质量波动较大(2-4分)，这可能是乏力的主要原因。建议：<br>1. 今晚试试22:30前入睡<br>2. 午后做10分钟八段锦<br>3. 晚餐加一碗山药莲子粥</div>
+        </div>
+        <div style="margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px;">
+          <span class="badge badge-herb" style="font-size: 10px;">💬 融入体质上下文</span>
+          <span class="badge badge-herb" style="font-size: 10px;">📊 结合日记数据</span>
+          <span class="badge badge-cinnabar" style="font-size: 10px;">🚨 紧急症状拦截</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 9. 如何让患者愿意用 ==================== -->
+<div class="slide bg-deep">
+  <div class="flex-center flex-col gap-md max-w-5xl">
+    <div class="anim-up text-center">
+      <p class="text-label" style="color: var(--herb-400); margin-bottom: 6px;">PATIENT ACQUISITION</p>
+      <h2 class="title-section" style="color: var(--herb-200);">如何让患者愿意用？</h2>
+    </div>
+    <div class="divider-light anim-up-d1"></div>
+    <div class="grid-2 w-full anim-up-d2" style="margin-top: 8px;">
+      <div>
+        <h3 style="font-size: 18px; color: var(--herb-300); margin-bottom: 16px;">🚪 获客入口</h3>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div class="card-dark" style="padding: 16px 20px; display: flex; gap: 12px; align-items: center;">
+            <span style="font-size: 22px;">🏥</span>
+            <div>
+              <h4 style="font-size: 14px; color: var(--herb-200);">诊室引导</h4>
+              <p class="text-xs" style="color: var(--ink-400);">医生开完处方后推荐"扫码做个体质评估"<br>自然衔接就诊流程，医嘱式信任感</p>
+            </div>
+          </div>
+          <div class="card-dark" style="padding: 16px 20px; display: flex; gap: 12px; align-items: center;">
+            <span style="font-size: 22px;">📱</span>
+            <div>
+              <h4 style="font-size: 14px; color: var(--herb-200);">候诊区二维码</h4>
+              <p class="text-xs" style="color: var(--ink-400);">"等待时间做个免费体质测评"<br>碎片时间转化，候诊变"有用"</p>
+            </div>
+          </div>
+          <div class="card-dark" style="padding: 16px 20px; display: flex; gap: 12px; align-items: center;">
+            <span style="font-size: 22px;">💬</span>
+            <div>
+              <h4 style="font-size: 14px; color: var(--herb-200);">公众号/社群</h4>
+              <p class="text-xs" style="color: var(--ink-400);">医院公众号推送"了解你的中医体质"<br>患者社群分享养生方案，口碑裂变</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3 style="font-size: 18px; color: var(--herb-300); margin-bottom: 16px;">💡 患者为什么会留下来</h3>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div class="card-dark" style="padding: 16px 20px; display: flex; gap: 12px; align-items: center;">
+            <span style="font-size: 22px;">🪞</span>
+            <div>
+              <h4 style="font-size: 14px; color: var(--herb-200);">好奇心驱动</h4>
+              <p class="text-xs" style="color: var(--ink-400);">"我到底是什么体质？"——每个人都想了解自己<br>体质报告就是最好的钩子，完成率极高</p>
+            </div>
+          </div>
+          <div class="card-dark" style="padding: 16px 20px; display: flex; gap: 12px; align-items: center;">
+            <span style="font-size: 22px;">📋</span>
+            <div>
+              <h4 style="font-size: 14px; color: var(--herb-200);">方案可执行</h4>
+              <p class="text-xs" style="color: var(--ink-400);">不是"清淡饮食"这种废话，而是"今晚煮山药粥"<br>具体到食谱、穴位位置、运动时长，照做就行</p>
+            </div>
+          </div>
+          <div class="card-dark" style="padding: 16px 20px; display: flex; gap: 12px; align-items: center;">
+            <span style="font-size: 22px;">🤝</span>
+            <div>
+              <h4 style="font-size: 14px; color: var(--herb-200);">有人"管"的感觉</h4>
+              <p class="text-xs" style="color: var(--ink-400);">AI助手随时在线 + 医生能看到我的日记 + 定期随访<br>不再是"看完病就没人管了"</p>
+            </div>
+          </div>
+          <div class="card-dark" style="padding: 16px 20px; display: flex; gap: 12px; align-items: center;">
+            <span style="font-size: 22px;">📊</span>
+            <div>
+              <h4 style="font-size: 14px; color: var(--herb-200);">看得见变化</h4>
+              <p class="text-xs" style="color: var(--ink-400);">打卡28天后趋势图告诉你"睡眠质量提升了40%"<br>数据可视化让坚持变得有意义</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 10. 医生端：监控全景 ==================== -->
+<div class="slide bg-paper">
+  <div class="flex-center flex-col gap-md max-w-6xl">
+    <div class="anim-up text-center">
+      <p class="text-label text-herb-dark" style="margin-bottom: 6px;">DOCTOR DASHBOARD</p>
+      <h2 class="title-section" style="color: var(--ink-900);">医生端：如何监控患者？</h2>
+      <p class="text-sm text-ink-light">从宏观全局到微观个体，层层深入</p>
+    </div>
+    <div class="split anim-up-d1" style="max-width: 1200px; gap: 36px;">
+      <div>
+        <h3 style="font-size: 18px; color: var(--herb-700); margin-bottom: 14px;">📊 层级一：全局看板</h3>
+        <div class="card" style="padding: 18px;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
+            <div class="mini-stat"><div class="mini-stat-val" style="color: var(--herb-700);">1,284</div><div class="mini-stat-lbl">在管患者</div></div>
+            <div class="mini-stat"><div class="mini-stat-val" style="color: var(--celadon-600);">156</div><div class="mini-stat-lbl">本月评估</div></div>
+            <div class="mini-stat"><div class="mini-stat-val" style="color: var(--amber-500);">38</div><div class="mini-stat-lbl">待随访</div></div>
+            <div class="mini-stat" style="border-color: var(--cinnabar-100);"><div class="mini-stat-val" style="color: var(--cinnabar-500);">12</div><div class="mini-stat-lbl">⚠️ 高风险患者</div></div>
+          </div>
+          <p class="text-xs text-ink-light" style="border-top: 1px solid var(--herb-200); padding-top: 8px;">
+            体质分布图 · 复诊率趋势 · 活跃度热力图 · 各类预警统计
+          </p>
+        </div>
+        <h3 style="font-size: 18px; color: var(--herb-700); margin-top: 16px; margin-bottom: 14px;">👥 层级二：患者列表</h3>
+        <div class="card" style="padding: 14px;">
+          <div style="font-size: 11px; color: var(--ink-500); margin-bottom: 8px;">🔍 按姓名/手机号搜索 | 按体质/风险/活跃度筛选排序</div>
+          <div style="display: flex; align-items: center; gap: 8px; padding: 8px; background: var(--herb-50); border-radius: 6px; margin-bottom: 6px;">
+            <div style="width: 28px; height: 28px; border-radius: 50%; background: var(--herb-200); display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--herb-700);">张</div>
+            <div style="flex:1;"><span style="font-size: 13px; font-weight: 600;">张伟</span> <span class="text-xs" style="color: var(--ink-400);">男·45岁</span></div>
+            <span class="badge badge-herb" style="font-size: 10px;">气虚质</span>
+            <span class="badge badge-amber" style="font-size: 10px;">中风险</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; padding: 8px; background: white; border-radius: 6px;">
+            <div style="width: 28px; height: 28px; border-radius: 50%; background: var(--cinnabar-100); display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--cinnabar-600);">陈</div>
+            <div style="flex:1;"><span style="font-size: 13px; font-weight: 600;">陈建国</span> <span class="text-xs" style="color: var(--ink-400);">男·52岁</span></div>
+            <span class="badge badge-herb" style="font-size: 10px;">痰湿质</span>
+            <span class="badge badge-cinnabar" style="font-size: 10px;">⚠️ 高风险</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3 style="font-size: 18px; color: var(--herb-700); margin-bottom: 14px;">🔬 层级三：患者360°画像</h3>
+        <div class="card" style="padding: 18px;">
+          <p style="font-size: 14px; font-weight: 600; color: var(--ink-900); margin-bottom: 12px;">张伟的完整健康档案</p>
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <div style="display: flex; gap: 8px; align-items: center; padding: 8px 10px; background: var(--herb-50); border-radius: 6px; border-left: 3px solid var(--herb-600);">
+              <span>📋</span>
+              <div><strong style="font-size: 12px;">体质档案</strong><br><span class="text-xs" style="color: var(--ink-500);">气虚质(68.8分) · 兼阳虚 · 2次评估历史</span></div>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center; padding: 8px 10px; background: var(--celadon-100); border-radius: 6px; border-left: 3px solid var(--celadon-500);">
+              <span>📔</span>
+              <div><strong style="font-size: 12px;">近期日记</strong><br><span class="text-xs" style="color: var(--ink-500);">连续打卡12天 · 睡眠均值7h · 情绪评分3.5 · 症状：偶有乏力</span></div>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center; padding: 8px 10px; background: var(--amber-100); border-radius: 6px; border-left: 3px solid var(--amber-500);">
+              <span>🤖</span>
+              <div><strong style="font-size: 12px;">AI对话记录</strong><br><span class="text-xs" style="color: var(--ink-500);">共8次对话 · 主要咨询：黄芪用量、乏力改善、饮食调理</span></div>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center; padding: 8px 10px; background: var(--herb-100); border-radius: 6px; border-left: 3px solid var(--herb-500);">
+              <span>🔄</span>
+              <div><strong style="font-size: 12px;">随访记录</strong><br><span class="text-xs" style="color: var(--ink-500);">已完成3/8次 · 下次：2月28日 · AI摘要：症状缓解中</span></div>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center; padding: 8px 10px; background: white; border-radius: 6px; border-left: 3px solid var(--ink-300);">
+              <span>📊</span>
+              <div><strong style="font-size: 12px;">趋势分析</strong><br><span class="text-xs" style="color: var(--ink-500);">睡眠质量↑15% · 乏力频次↓ · 运动依从性75%</span></div>
+            </div>
+          </div>
+        </div>
+        <p class="text-xs text-ink-light" style="margin-top: 8px; text-align: center;">
+          医生不需要打电话问"最近怎么样"——数据已经在这里
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 11. 医生端：风险预警 ==================== -->
+<div class="slide bg-cinnabar">
+  <div class="flex-center flex-col gap-md max-w-5xl">
+    <div class="anim-up text-center">
+      <p class="text-label" style="color: var(--cinnabar-400); margin-bottom: 6px;">RISK MANAGEMENT</p>
+      <h2 class="title-section" style="color: var(--herb-100);">智能风险预警与干预</h2>
+      <p class="text-sm" style="color: var(--ink-400);">AI自动识别风险信号，医生精准介入</p>
+    </div>
+    <div class="grid-2 w-full anim-up-d1" style="margin-top: 8px;">
+      <div>
+        <h3 style="font-size: 17px; color: var(--herb-300); margin-bottom: 14px;">🚨 风险信号来源</h3>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <div class="alert-card" style="background: rgba(200,50,50,0.15); border: 1px solid rgba(200,50,50,0.3);">
+            <span style="font-size: 18px;">📔</span>
+            <div>
+              <h4 style="font-size: 13px; color: var(--cinnabar-400);">日记异常</h4>
+              <p class="text-xs" style="color: var(--ink-400);">连续3天睡眠＜5h · 情绪评分连续下降 · 新增症状</p>
+            </div>
+          </div>
+          <div class="alert-card" style="background: rgba(200,50,50,0.15); border: 1px solid rgba(200,50,50,0.3);">
+            <span style="font-size: 18px;">🔄</span>
+            <div>
+              <h4 style="font-size: 13px; color: var(--cinnabar-400);">随访预警</h4>
+              <p class="text-xs" style="color: var(--ink-400);">AI分析反馈评分低于3分 · 新出现症状 · 依从性骤降</p>
+            </div>
+          </div>
+          <div class="alert-card" style="background: rgba(200,50,50,0.15); border: 1px solid rgba(200,50,50,0.3);">
+            <span style="font-size: 18px;">⏰</span>
+            <div>
+              <h4 style="font-size: 13px; color: var(--cinnabar-400);">行为预警</h4>
+              <p class="text-xs" style="color: var(--ink-400);">超过14天未打卡 · 超过30天未复诊 · 错过随访</p>
+            </div>
+          </div>
+          <div class="alert-card" style="background: rgba(200,50,50,0.15); border: 1px solid rgba(200,50,50,0.3);">
+            <span style="font-size: 18px;">🤖</span>
+            <div>
+              <h4 style="font-size: 13px; color: var(--cinnabar-400);">对话预警</h4>
+              <p class="text-xs" style="color: var(--ink-400);">AI对话中提及胸痛/头晕等敏感症状（已引导就医）</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3 style="font-size: 17px; color: var(--herb-300); margin-bottom: 14px;">⚡ 医生干预流程</h3>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div class="item-row">
+            <div class="step-num" style="background: rgba(200,50,50,0.2); color: var(--cinnabar-400);">1</div>
+            <div>
+              <h4 style="font-size: 13px; color: var(--herb-200);">看板醒目提示</h4>
+              <p class="text-xs" style="color: var(--ink-400);">Dashboard红色角标"12名高风险患者"，一键查看列表</p>
+            </div>
+          </div>
+          <div class="item-row">
+            <div class="step-num" style="background: rgba(200,50,50,0.2); color: var(--cinnabar-400);">2</div>
+            <div>
+              <h4 style="font-size: 13px; color: var(--herb-200);">AI摘要辅助判断</h4>
+              <p class="text-xs" style="color: var(--ink-400);">"陈建国：体重未降，痰湿较重，血脂偏高，代谢综合征风险"<br>AI给出风险等级和建议，医生快速了解情况</p>
+            </div>
+          </div>
+          <div class="item-row">
+            <div class="step-num" style="background: rgba(200,50,50,0.2); color: var(--cinnabar-400);">3</div>
+            <div>
+              <h4 style="font-size: 13px; color: var(--herb-200);">一键触达患者</h4>
+              <p class="text-xs" style="color: var(--ink-400);">推送随访提醒/复诊建议到患者小程序<br>患者端收到"您的主治医生建议您本周来院复查"</p>
+            </div>
+          </div>
+          <div class="item-row">
+            <div class="step-num" style="background: rgba(200,50,50,0.2); color: var(--cinnabar-400);">4</div>
+            <div>
+              <h4 style="font-size: 13px; color: var(--herb-200);">闭环追踪</h4>
+              <p class="text-xs" style="color: var(--ink-400);">患者复诊后重新评估 → 更新方案 → 继续追踪<br>风险等级动态调整，持续监控</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 12. 管理方案体系 ==================== -->
+<div class="slide bg-warm">
+  <div class="flex-center flex-col gap-md max-w-5xl">
+    <div class="anim-up text-center">
+      <p class="text-label text-herb-dark" style="margin-bottom: 6px;">MANAGEMENT SYSTEM</p>
+      <h2 class="title-section" style="color: var(--ink-900);">系统化管理方案</h2>
+      <p class="text-sm text-ink-light">从评估到复诊，全流程标准化管理</p>
+    </div>
+    <div class="divider anim-up-d1"></div>
+    <div class="grid-3 w-full anim-up-d2" style="margin-top: 8px;">
+      <!-- 方案一 -->
+      <div class="card" style="border-top: 3px solid var(--celadon-500); padding: 24px 20px;">
+        <span class="badge badge-celadon" style="margin-bottom: 10px;">低风险管理</span>
+        <h4 style="font-size: 16px; color: var(--ink-900); margin-bottom: 10px;">平和质 / 低风险患者</h4>
+        <div style="display: flex; flex-direction: column; gap: 8px; font-size: 12px; color: var(--ink-500);">
+          <div style="display: flex; gap: 6px;"><span style="color: var(--celadon-500);">●</span> 体质评估：每6个月1次</div>
+          <div style="display: flex; gap: 6px;"><span style="color: var(--celadon-500);">●</span> 养生方案：顺时养生为主</div>
+          <div style="display: flex; gap: 6px;"><span style="color: var(--celadon-500);">●</span> 日记打卡：鼓励但不强制</div>
+          <div style="display: flex; gap: 6px;"><span style="color: var(--celadon-500);">●</span> 随访频率：每月1次自动</div>
+          <div style="display: flex; gap: 6px;"><span style="color: var(--celadon-500);">●</span> 复诊引导：按季节提醒</div>
+        </div>
+        <p class="text-xs" style="color: var(--celadon-600); margin-top: 10px; font-weight: 500;">目标：维持健康，预防偏颇</p>
+      </div>
+      <!-- 方案二 -->
+      <div class="card" style="border-top: 3px solid var(--amber-500); padding: 24px 20px;">
+        <span class="badge badge-amber" style="margin-bottom: 10px;">中风险管理</span>
+        <h4 style="font-size: 16px; color: var(--ink-900); margin-bottom: 10px;">偏颇体质 / 亚健康人群</h4>
+        <div style="display: flex; flex-direction: column; gap: 8px; font-size: 12px; color: var(--ink-500);">
+          <div style="display: flex; gap: 6px;"><span style="color: var(--amber-500);">●</span> 体质评估：每3个月1次</div>
+          <div style="display: flex; gap: 6px;"><span style="color: var(--amber-500);">●</span> 养生方案：针对性调理方案</div>
+          <div style="display: flex; gap: 6px;"><span style="color: var(--amber-500);">●</span> 日记打卡：建议每日，AI提醒</div>
+          <div style="display: flex; gap: 6px;"><span style="color: var(--amber-500);">●</span> 随访频率：每2周1次</div>
+          <div style="display: flex; gap: 6px;"><span style="color: var(--amber-500);">●</span> 复诊引导：AI分析驱动</div>
+        </div>
+        <p class="text-xs" style="color: var(--amber-600); margin-top: 10px; font-weight: 500;">目标：纠偏调理，改善体质</p>
+      </div>
+      <!-- 方案三 -->
+      <div class="card" style="border-top: 3px solid var(--cinnabar-500); padding: 24px 20px;">
+        <span class="badge badge-cinnabar" style="margin-bottom: 10px;">高风险管理</span>
+        <h4 style="font-size: 16px; color: var(--ink-900); margin-bottom: 10px;">多兼夹 / 慢病并发人群</h4>
+        <div style="display: flex; flex-direction: column; gap: 8px; font-size: 12px; color: var(--ink-500);">
+          <div style="display: flex; gap: 6px;"><span style="color: var(--cinnabar-500);">●</span> 体质评估：每月1次复评</div>
+          <div style="display: flex; gap: 6px;"><span style="color: var(--cinnabar-500);">●</span> 养生方案：医生审核+AI生成</div>
+          <div style="display: flex; gap: 6px;"><span style="color: var(--cinnabar-500);">●</span> 日记打卡：必须每日，异常报警</div>
+          <div style="display: flex; gap: 6px;"><span style="color: var(--cinnabar-500);">●</span> 随访频率：每周1次重点跟进</div>
+          <div style="display: flex; gap: 6px;"><span style="color: var(--cinnabar-500);">●</span> 复诊引导：主动约诊+医生通知</div>
+        </div>
+        <p class="text-xs" style="color: var(--cinnabar-600); margin-top: 10px; font-weight: 500;">目标：密切监控，防止恶化</p>
+      </div>
+    </div>
+    <div class="card anim-up-d3" style="width: 100%; padding: 16px 24px; text-align: center;">
+      <p style="font-size: 13px; color: var(--ink-600); line-height: 1.7;">
+        📌 管理方案 <strong>自动匹配</strong>：体质评估完成后，系统根据主体质类型、兼夹情况、既往病史自动分配管理等级<br>
+        等级动态调整 — 随访反馈改善则降级，出现风险信号则升级，实现 <strong>"分层管理、精准施策"</strong>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 13. AI 安全合规 ==================== -->
+<div class="slide bg-ink">
+  <div class="flex-center flex-col gap-md max-w-5xl">
+    <div class="anim-up text-center">
+      <p class="text-label text-herb-light" style="margin-bottom: 6px;">SAFETY & COMPLIANCE</p>
+      <h2 class="title-section" style="color: var(--herb-200);">AI 安全与合规</h2>
+    </div>
+    <div class="divider-light anim-up-d1"></div>
+    <div class="grid-2 w-full anim-up-d2">
+      <div class="card-dark">
+        <h4 style="color: var(--herb-300); font-size: 16px; margin-bottom: 14px;">🛡️ 能力边界控制</h4>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-size: 13px; color: var(--ink-300); padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; color: var(--celadon-400);">✓</span> 只提供养生建议，<strong style="color: var(--herb-300);">不做疾病诊断</strong></div>
+          <div style="font-size: 13px; color: var(--ink-300); padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; color: var(--celadon-400);">✓</span> 不开具处方，不替代医生专业诊疗</div>
+          <div style="font-size: 13px; color: var(--ink-300); padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; color: var(--celadon-400);">✓</span> 超出能力范围诚实告知并建议就医</div>
+          <div style="font-size: 13px; color: var(--ink-300); padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; color: var(--celadon-400);">✓</span> 双轨制：国标算法确定性 + AI增强智能性</div>
+          <div style="font-size: 13px; color: var(--ink-300); padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; color: var(--celadon-400);">✓</span> 所有AI输出结构化校验，防止幻觉输出</div>
+        </div>
+      </div>
+      <div class="card-dark">
+        <h4 style="color: var(--cinnabar-400); font-size: 16px; margin-bottom: 14px;">🚨 紧急拦截机制</h4>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-size: 13px; color: var(--ink-300); padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; color: var(--cinnabar-400);">!</span> <strong style="color: var(--herb-300);">30+紧急关键词</strong>硬编码拦截，不依赖AI判断</div>
+          <div style="font-size: 13px; color: var(--ink-300); padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; color: var(--cinnabar-400);">!</span> 胸痛、中风、大出血等 → 立即引导拨打120</div>
+          <div style="font-size: 13px; color: var(--ink-300); padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; color: var(--cinnabar-400);">!</span> "不想活"等心理危机 → 转介专业热线</div>
+          <div style="font-size: 13px; color: var(--ink-300); padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; color: var(--cinnabar-400);">!</span> 规则引擎优先级高于AI模型输出</div>
+          <div style="font-size: 13px; color: var(--ink-300); padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; color: var(--cinnabar-400);">!</span> 拦截记录上报医生端，形成闭环</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-dark anim-up-d3 text-center" style="width: 100%; max-width: 800px; padding: 14px 20px;">
+      <p style="color: var(--ink-300); font-size: 13px; line-height: 1.7;">
+        政策对标：卫健委《AI应用场景参考指引》——
+        <span style="color: var(--herb-300);">AI+中医药(#22-27) · 智能慢病管理(#41) · 智能随访(#12)</span>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 14. 技术亮点 ==================== -->
+<div class="slide bg-paper">
+  <div class="flex-center flex-col gap-md max-w-5xl">
+    <div class="anim-up text-center">
+      <p class="text-label text-herb-dark" style="margin-bottom: 6px;">TECHNOLOGY</p>
+      <h2 class="title-section" style="color: var(--ink-900);">技术亮点</h2>
+    </div>
+    <div class="divider anim-up-d1"></div>
+    <div class="grid-3 w-full anim-up-d2">
+      <div class="card-feature" style="padding: 22px 18px;">
+        <div style="font-size: 24px; margin-bottom: 8px;">🔮</div>
+        <h4 style="font-size: 14px; margin-bottom: 6px;">结构化 AI 输出</h4>
+        <p class="text-xs text-ink-light">Zod Schema + generateObject<br>AI输出100%结构化可靠<br>五维方案格式统一</p>
+      </div>
+      <div class="card-feature" style="padding: 22px 18px;">
+        <div style="font-size: 24px; margin-bottom: 8px;">🧬</div>
+        <h4 style="font-size: 14px; margin-bottom: 6px;">深度上下文注入</h4>
+        <p class="text-xs text-ink-light">AI对话自动注入体质类型<br>近期日记 + 养生方案<br>每次回复都"懂你"</p>
+      </div>
+      <div class="card-feature" style="padding: 22px 18px;">
+        <div style="font-size: 24px; margin-bottom: 8px;">📊</div>
+        <h4 style="font-size: 14px; margin-bottom: 6px;">双轨评分体系</h4>
+        <p class="text-xs text-ink-light">国标算法确定性评分<br>+ AI增强智能分析<br>准确性与智能性兼得</p>
+      </div>
+      <div class="card-feature" style="padding: 22px 18px;">
+        <div style="font-size: 24px; margin-bottom: 8px;">🔌</div>
+        <h4 style="font-size: 14px; margin-bottom: 6px;">模型可切换</h4>
+        <p class="text-xs text-ink-light">Vercel AI SDK 统一抽象<br>通义千问 / GPT / Claude<br>一行代码切换模型</p>
+      </div>
+      <div class="card-feature" style="padding: 22px 18px;">
+        <div style="font-size: 24px; margin-bottom: 8px;">🏗️</div>
+        <h4 style="font-size: 14px; margin-bottom: 6px;">Monorepo 架构</h4>
+        <p class="text-xs text-ink-light">pnpm + Turborepo<br>类型安全共享<br>多端一致体验</p>
+      </div>
+      <div class="card-feature" style="padding: 22px 18px;">
+        <div style="font-size: 24px; margin-bottom: 8px;">📱</div>
+        <h4 style="font-size: 14px; margin-bottom: 6px;">微信生态原生</h4>
+        <p class="text-xs text-ink-light">小程序零安装触达<br>微信登录无摩擦<br>模板消息即时提醒</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 15. 价值总结 ==================== -->
+<div class="slide bg-celadon">
+  <div class="flex-center flex-col gap-md max-w-5xl">
+    <div class="anim-up text-center">
+      <p class="text-label text-celadon" style="margin-bottom: 6px;">VALUE</p>
+      <h2 class="title-section" style="color: var(--ink-900);">我们能带来什么？</h2>
+    </div>
+    <div class="divider anim-up-d1"></div>
+    <div class="split anim-up-d2" style="max-width: 1100px;">
+      <div>
+        <h3 style="font-size: 20px; color: var(--herb-700); margin-bottom: 16px;">🏥 对医院</h3>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div class="item-row"><span style="font-size: 18px;">📈</span><div><h4 style="font-size: 14px; font-weight: 600;">复诊率提升 20-30%</h4><p class="text-xs text-ink-light">AI持续触达 + 随访提醒 + 带数据复诊</p></div></div>
+          <div class="item-row"><span style="font-size: 18px;">⏱️</span><div><h4 style="font-size: 14px; font-weight: 600;">随访效率提升 5 倍</h4><p class="text-xs text-ink-light">AI代替人工电话随访，自动生成摘要报告</p></div></div>
+          <div class="item-row"><span style="font-size: 18px;">💰</span><div><h4 style="font-size: 14px; font-weight: 600;">康养科增收</h4><p class="text-xs text-ink-light">从"没人来的科室"变成康养管理中心，持续创收</p></div></div>
+          <div class="item-row"><span style="font-size: 18px;">🏆</span><div><h4 style="font-size: 14px; font-weight: 600;">响应政策 助力评审</h4><p class="text-xs text-ink-light">落地"AI+中医药"场景，数字化转型标杆</p></div></div>
+        </div>
+      </div>
+      <div>
+        <h3 style="font-size: 20px; color: var(--celadon-600); margin-bottom: 16px;">💚 对患者</h3>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div class="item-row"><span style="font-size: 18px;">🪞</span><div><h4 style="font-size: 14px; font-weight: 600;">真正认识自己的身体</h4><p class="text-xs text-ink-light">标准化体质评估，不再是模糊的"亚健康"</p></div></div>
+          <div class="item-row"><span style="font-size: 18px;">📋</span><div><h4 style="font-size: 14px; font-weight: 600;">拿到可执行的方案</h4><p class="text-xs text-ink-light">具体到食谱、穴位、运动方式，照做就行</p></div></div>
+          <div class="item-row"><span style="font-size: 18px;">🤝</span><div><h4 style="font-size: 14px; font-weight: 600;">离院不离"管"</h4><p class="text-xs text-ink-light">7×24小时AI陪伴 + 医生定期关注，有人"管"</p></div></div>
+          <div class="item-row"><span style="font-size: 18px;">📊</span><div><h4 style="font-size: 14px; font-weight: 600;">看得见的改变</h4><p class="text-xs text-ink-light">趋势图表量化进步，坚持调理变得有意义</p></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 16. 未来演进 ==================== -->
+<div class="slide bg-ink">
+  <div class="flex-center flex-col gap-md max-w-5xl">
+    <div class="anim-up text-center">
+      <p class="text-label text-herb-light" style="margin-bottom: 6px;">ROADMAP</p>
+      <h2 class="title-section" style="color: var(--herb-200);">未来演进</h2>
+    </div>
+    <div class="divider-light anim-up-d1"></div>
+    <div class="anim-up-d2" style="display: flex; gap: 0; width: 100%; max-width: 1000px; margin-top: 10px;">
+      <div style="flex: 1; text-align: center; padding: 20px 14px; border-right: 1px solid rgba(166,124,82,0.2);">
+        <div style="width: 44px; height: 44px; border-radius: 50%; background: var(--herb-600); color: white; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; font-family: var(--font-display); font-weight: 700; font-size: 18px;">1</div>
+        <h4 style="color: var(--herb-300); font-size: 14px; margin-bottom: 6px;">MVP · 体质调理</h4>
+        <p style="font-size: 11px; color: var(--ink-500); line-height: 1.5;">9种体质辨识<br>个性化养生方案<br>健康日记 + AI助手<br>随访管理</p>
+        <span class="badge" style="background: var(--celadon-500); color: white; margin-top: 8px; font-size: 10px;">当前阶段</span>
+      </div>
+      <div style="flex: 1; text-align: center; padding: 20px 14px; border-right: 1px solid rgba(166,124,82,0.2);">
+        <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(166,124,82,0.3); color: var(--herb-300); display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; font-family: var(--font-display); font-weight: 700; font-size: 18px;">2</div>
+        <h4 style="color: var(--herb-300); font-size: 14px; margin-bottom: 6px;">扩展 · 专科模块</h4>
+        <p style="font-size: 11px; color: var(--ink-500); line-height: 1.5;">骨科颈椎管理<br>心理健康评估<br>术后康复跟踪<br>糖尿病/高血压专病</p>
+      </div>
+      <div style="flex: 1; text-align: center; padding: 20px 14px; border-right: 1px solid rgba(166,124,82,0.2);">
+        <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(166,124,82,0.2); color: var(--herb-400); display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; font-family: var(--font-display); font-weight: 700; font-size: 18px;">3</div>
+        <h4 style="color: var(--herb-300); font-size: 14px; margin-bottom: 6px;">深化 · AI增强</h4>
+        <p style="font-size: 11px; color: var(--ink-500); line-height: 1.5;">舌象AI识别<br>RAG增强知识库<br>多模态健康分析<br>自动风险评分模型</p>
+      </div>
+      <div style="flex: 1; text-align: center; padding: 20px 14px;">
+        <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(166,124,82,0.15); color: var(--herb-500); display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; font-family: var(--font-display); font-weight: 700; font-size: 18px;">4</div>
+        <h4 style="color: var(--herb-300); font-size: 14px; margin-bottom: 6px;">生态 · 平台化</h4>
+        <p style="font-size: 11px; color: var(--ink-500); line-height: 1.5;">多医院 SaaS<br>医联体数据协同<br>健康数据开放平台<br>药企/保险生态接入</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 17. 谢谢 ==================== -->
+<div class="slide bg-herb">
+  <div class="flex-center flex-col gap-lg text-center" style="max-width: 800px;">
+    <div class="anim-scale">
+      <div class="ink-stamp" style="width: 110px; height: 110px; font-size: 30px; border-color: var(--herb-300); color: var(--herb-200);">智慧康养</div>
+    </div>
+    <div class="anim-up-d1">
+      <h2 class="title-section" style="color: var(--herb-100); font-size: 44px;">谢谢</h2>
+      <p class="text-body" style="color: var(--herb-300); margin-top: 10px;">
+        上工治未病，智慧护康养<br>让每一次健康管理，都有中医智慧相伴
+      </p>
+    </div>
+    <div class="divider-light anim-up-d2"></div>
+    <div class="anim-up-d3" style="display: flex; gap: 24px; color: var(--herb-400); font-size: 13px;">
+      <span>📱 微信小程序 · 患者端</span>
+      <span>💻 Web后台 · 医生端</span>
+      <span>🧠 AI · 通义千问</span>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="progress-bar" id="progressBar"></div>
+<div class="page-num" id="pageNum"></div>
+<div class="nav-hint">← → 键翻页 &nbsp;|&nbsp; 点击右/左侧翻页</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const progressBar = document.getElementById('progressBar');
+const pageNum = document.getElementById('pageNum');
+let current = 0;
+const total = slides.length;
+
+function goTo(i) {
+  if (i < 0 || i >= total) return;
+  slides[current].classList.remove('active');
+  current = i;
+  slides[current].classList.add('active');
+  progressBar.style.width = ((current + 1) / total * 100) + '%';
+  pageNum.textContent = (current + 1) + ' / ' + total;
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
+  if (e.key === 'Home') { e.preventDefault(); goTo(0); }
+  if (e.key === 'End') { e.preventDefault(); goTo(total - 1); }
+});
+
+document.addEventListener('click', (e) => {
+  if (e.target.closest('a, button, input')) return;
+  e.clientX / window.innerWidth < 0.33 ? goTo(current - 1) : goTo(current + 1);
+});
+
+let tx = 0;
+document.addEventListener('touchstart', (e) => { tx = e.touches[0].clientX; });
+document.addEventListener('touchend', (e) => {
+  const d = e.changedTouches[0].clientX - tx;
+  if (Math.abs(d) > 50) d > 0 ? goTo(current - 1) : goTo(current + 1);
+});
+
+goTo(0);
+</script>
+</body>
+</html>
