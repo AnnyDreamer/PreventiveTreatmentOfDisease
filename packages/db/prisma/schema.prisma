@@ -86,7 +86,9 @@ model PatientProfile {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
-  followupPlans FollowupPlan[]
+  followupEnrollments    FollowupEnrollment[]
+  reminderLogs           ReminderLog[]
+  activityRegistrations  ActivityRegistration[]
 }
 
 // 医生档案
@@ -101,7 +103,8 @@ model DoctorProfile {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  followupPlans FollowupPlan[]
+  followupPlans        FollowupPlan[]
+  publishedActivities  WellnessActivity[]
 }
 
 // 体质评估
@@ -193,16 +196,19 @@ model ChatMessage {
   @@index([sessionId])
 }
 
-// 随访计划
+// 随访计划（面向患者群体）
 model FollowupPlan {
   id          String   @id @default(cuid())
-  patientId   String
-  patient     PatientProfile @relation(fields: [patientId], references: [id], onDelete: Cascade)
   doctorId    String?
   doctor      DoctorProfile? @relation(fields: [doctorId], references: [id])
 
   name        String
   description String?  @db.Text
+
+  // 目标人群筛选条件
+  targetConstitutions Json   // ConstitutionType[] 目标体质类型
+  targetRiskLevels   Json?  // RiskLevel[] 目标风险等级（可选，不填则不限）
+
   startDate   DateTime
   endDate     DateTime?
   intervalDays Int     @default(7)
@@ -210,17 +216,33 @@ model FollowupPlan {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
+  enrollments FollowupEnrollment[]
+
+  @@index([doctorId])
+}
+
+// 随访登记（计划与患者的关联）
+model FollowupEnrollment {
+  id          String   @id @default(cuid())
+  planId      String
+  plan        FollowupPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+  patientId   String
+  patient     PatientProfile @relation(fields: [patientId], references: [id], onDelete: Cascade)
+
+  enrolledAt  DateTime @default(now())
+
   records     FollowupRecord[]
 
+  @@unique([planId, patientId])
+  @@index([planId])
   @@index([patientId])
-  @@index([doctorId])
 }
 
 // 随访记录
 model FollowupRecord {
-  id          String   @id @default(cuid())
-  planId      String
-  plan        FollowupPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+  id           String   @id @default(cuid())
+  enrollmentId String
+  enrollment   FollowupEnrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
 
   scheduledDate DateTime
   completedDate DateTime?
@@ -234,9 +256,147 @@ model FollowupRecord {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  @@index([planId])
+  @@index([enrollmentId])
   @@index([status])
   @@index([scheduledDate])
+}
+
+// ============================================================
+// 康养服务分类枚举
+// ============================================================
+enum ServiceCategory {
+  MOXIBUSTION    // 艾灸
+  SANFU_PATCH    // 三伏贴
+  TUINA          // 推拿
+  MASSAGE        // 按摩
+  ACUPUNCTURE    // 针灸
+  HERBAL_DRINK   // 中药饮
+  OTHER
+}
+
+// 健康内容类型枚举
+enum ContentType {
+  SOLAR_TERM          // 节气养生
+  CONSTITUTION_GUIDE  // 体质调养
+  DIET_THERAPY        // 食疗
+  EXERCISE_GUIDE      // 运动指导
+  KNOWLEDGE           // 常识
+}
+
+// 活动状态枚举
+enum ActivityStatus {
+  DRAFT
+  PUBLISHED
+  ONGOING
+  ENDED
+  CANCELLED
+}
+
+// 康养服务
+model WellnessService {
+  id                  String          @id @default(cuid())
+  name                String
+  category            ServiceCategory
+  description         String          @db.Text
+  benefits            Json            // string[]
+  precautions         Json            // string[]
+  duration            String?
+  price               String?
+  suitableFor         Json            // ConstitutionType[]
+  contraindicatedFor  Json?           // ConstitutionType[]
+  isSeasonalOnly      Boolean         @default(false)
+  seasonalNote        String?
+  coverImage          String?
+  isActive            Boolean         @default(true)
+  sortOrder           Int             @default(0)
+  hospitalId          String
+  hospital            Hospital        @relation(fields: [hospitalId], references: [id])
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
+
+  @@index([hospitalId, isActive])
+}
+
+// 义诊活动
+model WellnessActivity {
+  id                   String           @id @default(cuid())
+  title                String
+  description          String           @db.Text
+  location             String
+  department           String?
+  startTime            DateTime
+  endTime              DateTime
+  capacity             Int
+  currentCount         Int              @default(0)
+  status               ActivityStatus   @default(DRAFT)
+  targetConstitutions  Json?            // ConstitutionType[]
+  coverImage           String?
+  tags                 Json?            // string[]
+  publishedAt          DateTime?
+  hospitalId           String
+  hospital             Hospital         @relation(fields: [hospitalId], references: [id])
+  publisherId          String?
+  publisher            DoctorProfile?   @relation(fields: [publisherId], references: [id])
+  registrations        ActivityRegistration[]
+  createdAt            DateTime         @default(now())
+  updatedAt            DateTime         @updatedAt
+
+  @@index([hospitalId, status])
+  @@index([status, startTime])
+}
+
+// 活动报名
+model ActivityRegistration {
+  id           String           @id @default(cuid())
+  activityId   String
+  activity     WellnessActivity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  patientId    String
+  patient      PatientProfile   @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  status       String           @default("REGISTERED")
+  note         String?
+  registeredAt DateTime         @default(now())
+  cancelledAt  DateTime?
+
+  @@unique([activityId, patientId])
+  @@index([patientId])
+}
+
+// 健康内容
+model HealthContent {
+  id            String       @id @default(cuid())
+  title         String
+  summary       String
+  body          String       @db.Text
+  contentType   ContentType
+  coverImage    String?
+  solarTermKey  String?
+  constitutions Json         // ConstitutionType[]
+  isPublished   Boolean      @default(false)
+  publishedAt   DateTime?
+  viewCount     Int          @default(0)
+  sortOrder     Int          @default(0)
+  authorName    String?
+  source        String?
+  hospitalId    String?
+  hospital      Hospital?    @relation(fields: [hospitalId], references: [id])
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@index([contentType, isPublished])
+  @@index([solarTermKey])
+}
+
+// 提醒记录
+model ReminderLog {
+  id        String   @id @default(cuid())
+  patientId String
+  patient   PatientProfile @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  type      String   // "FOLLOWUP_REMINDER" | "ASSESSMENT_REMINDER"
+  note      String?
+  createdAt DateTime @default(now())
+
+  @@index([patientId])
+  @@index([createdAt])
 }
 
 // 医院/机构
@@ -249,5 +409,8 @@ model Hospital {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  users     User[]
+  users      User[]
+  services   WellnessService[]
+  activities WellnessActivity[]
+  contents   HealthContent[]
 }
