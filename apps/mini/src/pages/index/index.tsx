@@ -8,10 +8,10 @@ import './index.scss'
 
 // 节气养生数据
 const SEASONAL_TIPS = [
-  { key: 'spring', season: '春', tip: '春养肝，宜疏肝理气', desc: '多食青色蔬菜，保持心情舒畅' },
-  { key: 'summer', season: '夏', tip: '夏养心，宜清心降火', desc: '饮食清淡，适当午休养心' },
-  { key: 'autumn', season: '秋', tip: '秋养肺，宜润肺生津', desc: '多食白色食物，注意保湿润燥' },
-  { key: 'winter', season: '冬', tip: '冬养肾，宜温补固本', desc: '早睡晚起，温补为主' },
+  { key: 'spring', season: '春', tip: '春养肝，宜疏肝理气', emoji: '🌿' },
+  { key: 'summer', season: '夏', tip: '夏养心，宜清心降火', emoji: '☀️' },
+  { key: 'autumn', season: '秋', tip: '秋养肺，宜润肺生津', emoji: '🍂' },
+  { key: 'winter', season: '冬', tip: '冬养肾，宜温补固本', emoji: '❄️' },
 ]
 
 function getCurrentSeason() {
@@ -23,17 +23,17 @@ function getCurrentSeason() {
 }
 
 const coreServices = [
-  { title: '体质辨识', icon: '辨', desc: '九种体质测评', theme: 'herb', path: '/pages/assessment/index' },
-  { title: '养生方案', icon: '方', desc: '个性化调养', theme: 'celadon', path: '/pages/plan/index' },
-  { title: 'AI问诊', icon: '诊', desc: '智能健康咨询', theme: 'cinnabar', path: '/pages/chat/index', isTab: true },
-  { title: '健康日记', icon: '记', desc: '每日健康打卡', theme: 'blue', path: '/pages/diary/index', isTab: true },
+  { title: '体质辨识', icon: '辨', desc: '九种体质测评', path: '/pages/assessment/index' },
+  { title: '养生方案', icon: '方', desc: '个性化调养', path: '/pages/plan/index' },
+  { title: 'AI问诊', icon: '诊', desc: '智能健康咨询', path: '/pages/chat/index', isTab: true },
+  { title: '健康日记', icon: '记', desc: '每日健康打卡', path: '/pages/diary/index', isTab: true },
 ]
 
 const wellnessEntries = [
-  { title: '药膳食谱', icon: '膳', desc: '食疗养生', theme: 'amber', path: '/pages/plan/index' },
-  { title: '穴位养生', icon: '灸', desc: '经络调理', theme: 'purple', path: '/pages/plan/index' },
-  { title: '四季养生', icon: '节', desc: '顺时调养', theme: 'celadon' },
-  { title: '养生常识', icon: '知', desc: '健康百科', theme: 'herb' },
+  { title: '药膳食谱', icon: '膳', desc: '食疗养生', path: '/pages/content/index?type=DIET_THERAPY' },
+  { title: '康养服务', icon: '灸', desc: '艾灸推拿针灸', path: '/pages/wellness/index' },
+  { title: '节气养生', icon: '节', desc: '顺时调养', path: '/pages/solar-term/index' },
+  { title: '义诊活动', icon: '义', desc: '免费义诊', path: '/pages/activity/index' },
 ]
 
 export default function IndexPage() {
@@ -72,24 +72,31 @@ export default function IndexPage() {
 
   return (
     <View className='index-page'>
-      {/* 顶部 Banner */}
-      <View className='banner'>
-        <View className='banner-deco' />
-        <View className='banner-content'>
-          <View className='banner-left'>
-            <Text className='greeting'>{getGreeting()}</Text>
-            <Text className='nickname'>{userInfo?.nickname || '养生达人'}</Text>
-          </View>
-          <View className='avatar-wrap'>
-            {userInfo?.avatar ? (
-              <Image className='avatar' src={userInfo.avatar} mode='aspectFill' />
-            ) : (
-              <View className='avatar avatar-placeholder'>
-                <Text className='avatar-text'>未</Text>
-              </View>
-            )}
-          </View>
+      {/* 顶部问候 */}
+      <View className='header'>
+        <View className='header-left'>
+          <Text className='greeting'>{getGreeting()}</Text>
+          <Text className='nickname'>{userInfo?.nickname || '养生达人'}</Text>
         </View>
+        <View className='avatar-wrap'>
+          {userInfo?.avatar ? (
+            <Image className='avatar' src={userInfo.avatar} mode='aspectFill' />
+          ) : (
+            <View className='avatar avatar-placeholder'>
+              <Text className='avatar-text'>
+                {(userInfo?.nickname || '养')[0]}
+              </Text>
+            </View>
+          )}
+        </View>
+      </View>
+
+      {/* 节气提示条 */}
+      <View className='season-tip'>
+        <Text className='season-tip__emoji'>{seasonTip.emoji}</Text>
+        <Text className='season-tip__text'>
+          {seasonTip.season}季 · {seasonTip.tip}
+        </Text>
       </View>
 
       {/* 体质评估卡片 */}
@@ -98,16 +105,18 @@ export default function IndexPage() {
           className='assess-card assess-card--empty'
           onClick={() => Taro.navigateTo({ url: '/pages/assessment/index' })}
         >
-          <View className='assess-card__badge'>
-            <Text className='assess-card__badge-text'>辨</Text>
-          </View>
-          <View className='assess-card__body'>
-            <Text className='assess-card__title'>开始体质评估</Text>
+          <View className='assess-card__left'>
+            <Text className='assess-card__title'>了解你的体质</Text>
             <Text className='assess-card__desc'>
-              通过中医九种体质辨识，了解您的体质特征
+              完成中医九种体质测评，获取个性化养生建议
             </Text>
+            <View className='assess-card__btn'>
+              <Text className='assess-card__btn-text'>开始测评</Text>
+            </View>
           </View>
-          <Text className='assess-card__arrow'>›</Text>
+          <View className='assess-card__icon-wrap'>
+            <Text className='assess-card__icon-char'>辨</Text>
+          </View>
         </View>
       ) : (
         <View
@@ -140,29 +149,21 @@ export default function IndexPage() {
         </View>
       )}
 
-      {/* 节气 + 打卡 合并横条 */}
+      {/* 今日打卡 */}
       <View
-        className='daily-bar'
+        className='checkin-bar'
         onClick={() => Taro.switchTab({ url: '/pages/diary/index' })}
       >
-        <View className='daily-bar__season'>
-          <View className={`daily-bar__season-dot daily-bar__season-dot--${seasonTip.key}`} />
-          <Text className='daily-bar__season-text'>
-            {seasonTip.season}季 · {seasonTip.tip}
-          </Text>
+        <View className='checkin-bar__left'>
+          <Text className='checkin-bar__icon'>📝</Text>
+          <Text className='checkin-bar__text'>今日健康打卡</Text>
         </View>
-        <View className='daily-bar__checkin'>
-          <Text className='daily-bar__checkin-text'>今日打卡 ›</Text>
-        </View>
+        <Text className='checkin-bar__arrow'>›</Text>
       </View>
 
       {/* 核心服务 */}
       <View className='section'>
-        <View className='section-header'>
-          <View className='section-header__line' />
-          <Text className='section-header__title'>核心服务</Text>
-          <View className='section-header__line' />
-        </View>
+        <Text className='section__title'>核心服务</Text>
         <View className='svc-grid'>
           {coreServices.map((svc) => (
             <View
@@ -170,7 +171,7 @@ export default function IndexPage() {
               className='svc-item'
               onClick={() => handleServiceClick(svc)}
             >
-              <View className={`svc-item__icon svc-item__icon--${svc.theme}`}>
+              <View className='svc-item__icon'>
                 <Text className='svc-item__icon-char'>{svc.icon}</Text>
               </View>
               <Text className='svc-item__title'>{svc.title}</Text>
@@ -182,11 +183,7 @@ export default function IndexPage() {
 
       {/* 养生天地 */}
       <View className='section'>
-        <View className='section-header'>
-          <View className='section-header__line' />
-          <Text className='section-header__title'>养生天地</Text>
-          <View className='section-header__line' />
-        </View>
+        <Text className='section__title'>养生天地</Text>
         <View className='svc-grid'>
           {wellnessEntries.map((entry) => (
             <View
@@ -194,7 +191,7 @@ export default function IndexPage() {
               className='svc-item'
               onClick={() => handleServiceClick(entry)}
             >
-              <View className={`svc-item__icon svc-item__icon--${entry.theme}`}>
+              <View className='svc-item__icon'>
                 <Text className='svc-item__icon-char'>{entry.icon}</Text>
               </View>
               <Text className='svc-item__title'>{entry.title}</Text>

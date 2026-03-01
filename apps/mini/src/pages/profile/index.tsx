@@ -145,7 +145,7 @@ export default function ProfilePage() {
 
       {/* 版本信息 */}
       <View className='version-info'>
-        <Text className='version-text'>治未病 v0.1.0</Text>
+        <Text className='version-text'>智慧中医康养 v0.1.0</Text>
       </View>
     </View>
   )

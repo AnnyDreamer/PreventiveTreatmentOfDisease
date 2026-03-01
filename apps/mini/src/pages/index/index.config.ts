@@ -1,3 +1,3 @@
 export default definePageConfig({
-  navigationBarTitleText: '治未病',
+  navigationBarTitleText: '智慧中医康养',
 })

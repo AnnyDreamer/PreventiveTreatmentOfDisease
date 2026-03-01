@@ -1,7 +1,7 @@
 {
   "miniprogramRoot": "dist/",
   "projectname": "zhiwebing-mini",
-  "description": "治未病 - 中医体质管理微信小程序",
+  "description": "智慧中医康养平台 - 中医体质管理微信小程序",
   "appid": "",
   "setting": {
     "urlCheck": true,

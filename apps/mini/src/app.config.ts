@@ -7,6 +7,13 @@ export default defineAppConfig({
     'pages/diary/index',
     'pages/chat/index',
     'pages/profile/index',
+    'pages/solar-term/index',
+    'pages/wellness/index',
+    'pages/wellness/detail',
+    'pages/activity/index',
+    'pages/activity/detail',
+    'pages/content/index',
+    'pages/content/detail',
   ],
   tabBar: {
     color: '#6b6b8a',
@@ -41,7 +48,7 @@ export default defineAppConfig({
   },
   window: {
     navigationBarBackgroundColor: '#faf7f2',
-    navigationBarTitleText: '治未病',
+    navigationBarTitleText: '智慧中医康养',
     navigationBarTextStyle: 'black',
     backgroundColor: '#faf7f2',
   },

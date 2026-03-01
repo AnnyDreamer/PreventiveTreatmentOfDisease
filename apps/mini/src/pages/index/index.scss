@@ -1,179 +1,192 @@
+/* 精确还原 Pencil 设计稿 "中医康养V2-现代清新" */
+/* 设计稿 390px → Taro designWidth 750, 换算系数 ≈ 1.923 */
+
 .index-page {
   min-height: 100vh;
-  background: var(--color-bg);
+  background: #F5F3EF;
   padding-bottom: env(safe-area-inset-bottom);
 }
 
 /* ============================================
-   顶部 Banner — 清新绿色渐变
+   Header — 问候 + 头像
+   pencil: padding [12,24,16,24]
    ============================================ */
-.banner {
-  position: relative;
-  padding: 48px 32px 28px;
-  overflow: hidden;
-}
-
-.banner-deco {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(180deg, #d4f0e3 0%, #e8f7ef 40%, var(--color-bg) 100%);
-
-  &::after {
-    content: '';
-    position: absolute;
-    top: -60px;
-    right: -40px;
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(45, 170, 111, 0.08) 0%, transparent 70%);
-  }
-}
-
-.banner-content {
-  position: relative;
+.header {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
+  padding: 24px 46px 32px 46px;
 }
 
-.banner-left {
+.header-left {
   display: flex;
   flex-direction: column;
-  flex: 1;
+  gap: 4px;
 }
 
 .greeting {
-  font-size: 26px;
-  color: var(--color-text-secondary);
-  margin-bottom: 4px;
+  font-size: 26px;         /* pencil: 13 */
+  color: #9C9B99;
+  font-weight: 500;
 }
 
 .nickname {
-  font-size: 44px;
-  font-weight: 700;
-  color: var(--color-text);
-  margin-bottom: 8px;
+  font-size: 44px;         /* pencil: 22 */
+  font-weight: 600;
+  color: #1A1918;
+  letter-spacing: -1px;
 }
 
 .avatar-wrap {
   flex-shrink: 0;
-  margin-left: 24px;
 }
 
 .avatar {
-  width: 96px;
-  height: 96px;
+  width: 82px;             /* pencil: 42 */
+  height: 82px;
   border-radius: 50%;
-  border: 3px solid rgba(45, 170, 111, 0.2);
 }
 
 .avatar-placeholder {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #2daa6f 0%, #1e8a55 100%);
-  border-color: rgba(45, 170, 111, 0.15);
+  background: #3D8A5A;
 }
 
 .avatar-text {
   color: #ffffff;
-  font-size: 40px;
+  font-size: 34px;         /* pencil: 17 */
   font-weight: 600;
 }
 
 /* ============================================
-   体质评估卡 — 双状态（绿色健康风）
+   节气提示胶囊
+   pencil: fill #E8F5EE, cornerRadius 100, padding [10,18], gap 8
    ============================================ */
-.assess-card {
-  margin: 0 24px 20px;
-  border-radius: 20px;
-  padding: 28px;
-  box-shadow: var(--shadow-md);
+.season-tip {
+  display: flex;
+  align-items: center;
+  margin: 0 32px 28px;     /* pencil content padding: [0,16] */
+  padding: 20px 36px;
+  background: #E8F5EE;
+  border-radius: 100px;
+  gap: 16px;
 }
 
-/* 未评估 */
+.season-tip__emoji {
+  font-size: 28px;         /* pencil: 14 */
+}
+
+.season-tip__text {
+  font-size: 24px;         /* pencil: 12 */
+  color: #2E7048;
+  font-weight: 500;
+}
+
+/* ============================================
+   体质评估卡
+   pencil: gradient [#3D8A5A→#2E7048], cornerRadius 20, padding 22
+   ============================================ */
+.assess-card {
+  margin: 0 32px 28px;
+  border-radius: 40px;     /* pencil: 20 */
+  padding: 44px;           /* pencil: 22 */
+}
+
+/* 未评估 — 绿色 CTA 卡片 */
 .assess-card--empty {
   display: flex;
   align-items: center;
-  background: linear-gradient(135deg, #ffffff 0%, #f0faf4 100%);
-  border: 1.5px dashed rgba(45, 170, 111, 0.3);
+  justify-content: space-between;
+  background: linear-gradient(135deg, #3D8A5A 0%, #2E7048 100%);
+  box-shadow: 0 8px 40px rgba(61, 138, 90, 0.12);
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: -80px;
+    right: -80px;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.06);
+  }
 }
 
-.assess-card__badge {
-  width: 72px;
-  height: 72px;
+.assess-card__left {
+  flex: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.assess-card__title {
+  display: block;
+  font-size: 34px;         /* pencil: 17 */
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 12px;
+}
+
+.assess-card__desc {
+  display: block;
+  font-size: 22px;         /* pencil: 11 */
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.4;
+  margin-bottom: 24px;
+}
+
+.assess-card__btn {
+  display: inline-flex;
+  background: #ffffff;
+  border-radius: 100px;
+  padding: 12px 36px;      /* pencil: [6,18] */
+}
+
+.assess-card__btn-text {
+  font-size: 24px;         /* pencil: 12 */
+  font-weight: 600;
+  color: #3D8A5A;
+}
+
+.assess-card__icon-wrap {
+  width: 108px;            /* pencil: 56 */
+  height: 108px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #2daa6f 0%, #1e8a55 100%);
+  background: rgba(255, 255, 255, 0.12);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  margin-right: 20px;
-  box-shadow: 0 4px 12px rgba(45, 170, 111, 0.3);
+  margin-left: 24px;
+  position: relative;
+  z-index: 1;
 }
 
-.assess-card__badge-text {
-  color: #ffffff;
-  font-size: 36px;
+.assess-card__icon-char {
+  font-size: 48px;         /* pencil: 24 */
   font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
 }
 
-.assess-card__body {
-  flex: 1;
-}
-
-.assess-card__title {
-  font-size: 30px;
-  font-weight: 600;
-  color: var(--color-text);
-  display: block;
-  margin-bottom: 6px;
-}
-
-.assess-card__desc {
-  font-size: 24px;
-  color: var(--color-text-secondary);
-  line-height: 1.4;
-}
-
-.assess-card__arrow {
-  flex-shrink: 0;
-  margin-left: 12px;
-  font-size: 44px;
-  color: var(--color-primary);
-  font-weight: 300;
-}
-
-/* 已评估 */
+/* 已评估 — 结果卡片 */
 .assess-card--result {
-  background: linear-gradient(135deg, #2daa6f 0%, #1e8a55 100%);
+  background: linear-gradient(135deg, #3D8A5A 0%, #2E7048 100%);
+  box-shadow: 0 8px 40px rgba(61, 138, 90, 0.12);
   position: relative;
   overflow: hidden;
 
   &::before {
     content: '';
     position: absolute;
-    top: -30px;
-    right: -30px;
-    width: 140px;
-    height: 140px;
+    top: -60px;
+    right: -60px;
+    width: 280px;
+    height: 280px;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.06);
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: -20px;
-    left: -20px;
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.04);
   }
 }
 
@@ -185,14 +198,14 @@
 }
 
 .result-label {
-  font-size: 22px;
-  color: rgba(255, 255, 255, 0.7);
+  font-size: 24px;
+  color: rgba(255, 255, 255, 0.65);
   display: block;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 .result-name {
-  font-size: 42px;
+  font-size: 44px;
   font-weight: 700;
   color: #ffffff;
 }
@@ -203,21 +216,21 @@
 }
 
 .result-score {
-  font-size: 48px;
+  font-size: 52px;
   font-weight: 700;
   color: #ffffff;
 }
 
 .result-score-unit {
-  font-size: 24px;
-  color: rgba(255, 255, 255, 0.7);
+  font-size: 26px;
+  color: rgba(255, 255, 255, 0.65);
   margin-left: 4px;
 }
 
 .result-divider {
   height: 1px;
-  background: rgba(255, 255, 255, 0.15);
-  margin: 20px 0;
+  background: rgba(255, 255, 255, 0.12);
+  margin: 24px 0;
 }
 
 .result-bottom {
@@ -229,207 +242,142 @@
 .result-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
   flex: 1;
 }
 
 .result-tag {
   background: rgba(255, 255, 255, 0.15);
-  border-radius: 8px;
-  padding: 6px 14px;
+  border-radius: 100px;
+  padding: 8px 20px;
 }
 
 .result-tag__text {
   color: rgba(255, 255, 255, 0.9);
-  font-size: 22px;
+  font-size: 24px;
 }
 
 .result-more {
   flex-shrink: 0;
-  margin-left: 16px;
+  margin-left: 20px;
   background: rgba(255, 255, 255, 0.2);
-  border-radius: 20px;
-  padding: 6px 18px;
+  border-radius: 100px;
+  padding: 8px 24px;
 }
 
 .result-more__text {
   color: #ffffff;
-  font-size: 22px;
+  font-size: 24px;
 }
 
 /* ============================================
-   节气 + 打卡 合并横条
+   今日打卡
+   pencil: fill #FFF, cornerRadius 16, padding [14,18], shadow
    ============================================ */
-.daily-bar {
+.checkin-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 0 24px 24px;
+  margin: 0 32px 28px;
   background: #ffffff;
-  border-radius: var(--radius-md);
-  padding: 18px 24px;
-  border-left: 4px solid var(--color-primary);
-  box-shadow: var(--shadow-sm);
+  border-radius: 32px;     /* pencil: 16 */
+  padding: 28px 36px;      /* pencil: [14,18] */
+  box-shadow: 0 2px 12px rgba(26, 25, 24, 0.03);
 }
 
-.daily-bar__season {
+.checkin-bar__left {
   display: flex;
   align-items: center;
-  flex: 1;
-  min-width: 0;
+  gap: 20px;               /* pencil: 10 */
 }
 
-.daily-bar__season-dot {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  margin-right: 12px;
-  flex-shrink: 0;
-
-  &--spring { background: #2daa6f; }
-  &--summer { background: #ff6b6b; }
-  &--autumn { background: #f9a825; }
-  &--winter { background: #5dc48a; }
+.checkin-bar__icon {
+  font-size: 28px;
 }
 
-.daily-bar__season-text {
-  font-size: 24px;
-  color: var(--color-text-secondary);
-  flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.checkin-bar__text {
+  font-size: 28px;         /* pencil: 14 */
+  font-weight: 500;
+  color: #1A1918;
 }
 
-.daily-bar__checkin {
-  flex-shrink: 0;
-  background: var(--color-warning);
-  border-radius: 20px;
-  padding: 8px 20px;
-  margin-left: 16px;
-}
-
-.daily-bar__checkin-text {
-  color: #ffffff;
-  font-size: 24px;
-  font-weight: 600;
+.checkin-bar__arrow {
+  font-size: 36px;         /* pencil: 18 */
+  color: #9C9B99;
+  font-weight: 300;
 }
 
 /* ============================================
-   模块标题 — 传统分隔线
+   区块标题
+   pencil: fontSize 16, fontWeight 600, letterSpacing -0.3
    ============================================ */
 .section {
-  margin: 0 24px 32px;
+  margin: 0 32px 28px;
 }
 
-.section-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 24px;
-}
-
-.section-header__line {
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(45, 170, 111, 0.2) 50%,
-    transparent 100%
-  );
-}
-
-.section-header__title {
-  font-size: 30px;
+.section__title {
+  display: block;
+  font-size: 32px;         /* pencil: 16 */
   font-weight: 600;
-  color: var(--color-text);
-  padding: 0 24px;
-  letter-spacing: 4px;
+  color: #1A1918;
+  margin-bottom: 24px;
+  letter-spacing: -0.5px;
 }
 
 /* ============================================
-   功能宫格 — 横排 1×4
+   服务宫格 — 2×2
+   pencil: card cornerRadius 20, padding 16, gap 10
+   icon 38×38, cornerRadius 12
    ============================================ */
 .svc-grid {
   display: flex;
-  flex-wrap: nowrap;
-  gap: 0;
-  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 20px;               /* pencil: 10 */
 }
 
 .svc-item {
-  flex: 1;
-  background: transparent;
-  padding: 16px 8px 12px;
+  width: calc(50% - 10px);
+  background: #ffffff;
+  border-radius: 40px;     /* pencil: 20 */
+  padding: 32px;           /* pencil: 16 */
   display: flex;
   flex-direction: column;
-  align-items: center;
   box-sizing: border-box;
-  position: relative;
+  box-shadow: 0 2px 12px rgba(26, 25, 24, 0.03);
 
   &:active {
-    opacity: 0.75;
+    transform: scale(0.98);
+    opacity: 0.9;
   }
 }
 
 .svc-item__icon {
-  width: 88px;
-  height: 88px;
-  border-radius: 50%;
+  width: 74px;             /* pencil: 38 */
+  height: 74px;
+  border-radius: 24px;     /* pencil: 12 */
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 10px;
-
-  &--herb {
-    background: #e6f7ef;
-    .svc-item__icon-char { color: #2daa6f; }
-  }
-
-  &--celadon {
-    background: #e6f7ef;
-    .svc-item__icon-char { color: #1e8a55; }
-  }
-
-  &--cinnabar {
-    background: #ffeaea;
-    .svc-item__icon-char { color: #ff6b6b; }
-  }
-
-  &--blue {
-    background: #e6f3fb;
-    .svc-item__icon-char { color: #3a90c8; }
-  }
-
-  &--amber {
-    background: #fff5e6;
-    .svc-item__icon-char { color: #f9a825; }
-  }
-
-  &--purple {
-    background: #f0edf8;
-    .svc-item__icon-char { color: #7b6cb5; }
-  }
+  margin-bottom: 20px;     /* pencil gap: 10 */
+  background: #E8F5EE;
 }
 
 .svc-item__icon-char {
-  font-size: 36px;
+  font-size: 32px;         /* pencil: 16 */
   font-weight: 700;
+  color: #3D8A5A;
 }
 
 .svc-item__title {
-  font-size: 26px;
+  font-size: 26px;         /* pencil: 13 */
   font-weight: 600;
-  color: var(--color-text);
-  margin-bottom: 2px;
-  text-align: center;
+  color: #1A1918;
+  margin-bottom: 4px;
 }
 
 .svc-item__desc {
-  font-size: 20px;
-  color: var(--color-text-secondary);
-  text-align: center;
+  font-size: 20px;         /* pencil: 10 */
+  color: #9C9B99;
 }
 
 /* ============================================

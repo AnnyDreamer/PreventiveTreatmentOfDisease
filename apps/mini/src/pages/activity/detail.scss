@@ -1,0 +1,226 @@
+.activity-detail {
+  background: #faf7f2;
+  min-height: 100vh;
+  padding-bottom: 120px;
+}
+
+.activity-cover {
+  width: 100%;
+  height: 320rpx;
+  background: linear-gradient(135deg, #2d9a64 0%, #8b5a2b 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.activity-cover__placeholder {
+  font-size: 80rpx;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.detail-body {
+  padding: 20px 16px 0;
+}
+
+.detail-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.detail-tag {
+  font-size: 22rpx;
+  padding: 4px 12px;
+  border-radius: 12px;
+
+  &--dept {
+    color: #2d9a64;
+    background: #f0fdf4;
+  }
+
+  &--status-PUBLISHED {
+    color: #2d9a64;
+    background: #f0fdf4;
+  }
+
+  &--status-ONGOING {
+    color: #3b82f6;
+    background: #eff6ff;
+  }
+
+  &--status-ENDED {
+    color: #6b7280;
+    background: #f9fafb;
+  }
+}
+
+.detail-title {
+  display: block;
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #1a1a2e;
+  font-family: 'Noto Serif SC', serif;
+  line-height: 1.4;
+  margin-bottom: 16px;
+}
+
+.detail-info-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+.info-row {
+  display: flex;
+  align-items: flex-start;
+  padding: 8px 0;
+  border-bottom: 1px solid #f5f0e8;
+
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+}
+
+.info-icon {
+  font-size: 28rpx;
+  margin-right: 12px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.info-content {
+  flex: 1;
+}
+
+.info-label {
+  display: block;
+  font-size: 22rpx;
+  color: #9ca3af;
+  margin-bottom: 2px;
+}
+
+.info-value {
+  display: block;
+  font-size: 28rpx;
+  color: #1a1a2e;
+}
+
+.section-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+.section-title {
+  display: block;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1a1a2e;
+  margin-bottom: 12px;
+}
+
+.detail-desc {
+  font-size: 28rpx;
+  color: #4a5568;
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+
+// 名额进度
+.capacity-section {
+  margin-bottom: 16px;
+}
+
+.capacity-bar__label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.capacity-bar__text {
+  font-size: 26rpx;
+  color: #6b7280;
+}
+
+.capacity-bar__count {
+  font-size: 26rpx;
+  color: #8b5a2b;
+  font-weight: 600;
+}
+
+.capacity-bar__track {
+  height: 8px;
+  background: #f0ebe3;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.capacity-bar__fill {
+  height: 100%;
+  background: #2d9a64;
+  border-radius: 4px;
+
+  &--full {
+    background: #ef4444;
+  }
+}
+
+// 适合体质标签
+.constitution-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.constitution-tag {
+  font-size: 24rpx;
+  color: #8b5a2b;
+  background: #fdf5ed;
+  border: 1px solid #e8d5c0;
+  border-radius: 20px;
+  padding: 6px 14px;
+}
+
+// 底部固定按钮
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border-top: 1px solid #f0ebe3;
+  padding: 16px;
+  padding-bottom: calc(16px + env(safe-area-inset-bottom));
+}
+
+.register-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 88rpx;
+  border-radius: 44rpx;
+  font-size: 32rpx;
+  font-weight: 600;
+
+  &--active {
+    background: #2d9a64;
+    color: #ffffff;
+  }
+
+  &--registered {
+    background: #f0fdf4;
+    color: #2d9a64;
+    border: 2px solid #2d9a64;
+  }
+
+  &--disabled {
+    background: #f0ebe3;
+    color: #9ca3af;
+  }
+}

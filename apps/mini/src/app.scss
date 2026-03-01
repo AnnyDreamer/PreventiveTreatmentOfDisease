@@ -1,29 +1,30 @@
 /* 智慧中医康养平台 - 全局样式 */
-/* 清新绿色健康风配色方案 */
+/* 还原 Pencil 设计稿 "中医康养V2-现代清新" 配色 */
 
 page {
-  --color-primary: #2daa6f;          /* 健康绿 */
-  --color-primary-deep: #1e8a55;     /* 深绿 */
-  --color-primary-light: #5dc48a;    /* 浅绿 */
-  --color-bg: #f4fbf7;               /* 浅薄荷白 */
+  --color-primary: #3D8A5A;          /* 自然绿 */
+  --color-primary-deep: #2E7048;     /* 深绿 */
+  --color-primary-light: #E8F5EE;    /* 浅绿底 */
+  --color-bg: #F5F3EF;               /* 暖米白 */
   --color-bg-card: #ffffff;
-  --color-text: #1a2e1a;             /* 深墨绿 */
-  --color-text-secondary: #5a7a65;   /* 灰绿 */
-  --color-text-light: #8aab95;    /* 浅文字 */
-  --color-border: #c8e6d4;
-  --color-border-light: #dff2e8;
-  --color-success: #27a363;          /* 成功绿（略深于主色） */
-  --color-danger: #ff6b6b;           /* 珊瑚红 */
-  --color-warning: #f9a825;          /* 暖黄 */
+  --color-text: #1A1918;             /* 正文黑 */
+  --color-text-secondary: #6D6C6A;   /* 辅助灰 */
+  --color-text-light: #9C9B99;       /* 浅灰 */
+  --color-border: #EDECEA;
+  --color-border-light: #F0EFEC;
+  --color-success: #3D8A5A;
+  --color-danger: #D08068;           /* 暖红 */
+  --color-warning: #D4A64A;          /* 琥珀 */
+  --color-accent: #D89575;           /* 暖珊瑚 */
 
   --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
+  --radius-md: 24px;
+  --radius-lg: 32px;
+  --radius-xl: 40px;
 
-  --shadow-sm: 0 2px 8px rgba(45, 170, 111, 0.08);
-  --shadow-md: 0 4px 16px rgba(45, 170, 111, 0.12);
-  --shadow-lg: 0 8px 32px rgba(45, 170, 111, 0.15);
+  --shadow-sm: 0 2px 12px rgba(26, 25, 24, 0.03);
+  --shadow-md: 0 4px 24px rgba(26, 25, 24, 0.06);
+  --shadow-lg: 0 8px 40px rgba(26, 25, 24, 0.08);
 
   --spacing-xs: 8px;
   --spacing-sm: 12px;
@@ -48,7 +49,7 @@ page {
 
 .card {
   background: var(--color-bg-card);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   padding: var(--spacing-md);
   box-shadow: var(--shadow-sm);
   margin-bottom: var(--spacing-md);
@@ -68,13 +69,8 @@ page {
   width: 100%;
   box-sizing: border-box;
 
-  &::after {
-    border: none;
-  }
-
-  &:active {
-    opacity: 0.85;
-  }
+  &::after { border: none; }
+  &:active { opacity: 0.85; }
 }
 
 .btn-secondary {
@@ -91,13 +87,8 @@ page {
   width: 100%;
   box-sizing: border-box;
 
-  &::after {
-    border: none;
-  }
-
-  &:active {
-    opacity: 0.85;
-  }
+  &::after { border: none; }
+  &:active { opacity: 0.85; }
 }
 
 .section-title {
@@ -118,6 +109,6 @@ page {
 
 .divider {
   height: 1px;
-  background: var(--color-border-light);
+  background: var(--color-border);
   margin: var(--spacing-md) 0;
 }
