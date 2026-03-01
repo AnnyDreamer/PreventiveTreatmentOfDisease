@@ -4,6 +4,9 @@ import {
   Users,
   ClipboardList,
   CalendarCheck,
+  Leaf,
+  Calendar,
+  FileText,
   Settings,
   Stethoscope,
   LogOut
@@ -14,6 +17,9 @@ const navItems = [
   { href: '/dashboard/patients', label: '患者管理', icon: Users },
   { href: '/dashboard/assessments', label: '体质评估', icon: ClipboardList },
   { href: '/dashboard/followups', label: '随访管理', icon: CalendarCheck },
+  { href: '/dashboard/services', label: '康养服务', icon: Leaf },
+  { href: '/dashboard/activities', label: '义诊活动', icon: Calendar },
+  { href: '/dashboard/contents', label: '健康内容', icon: FileText },
   { href: '/dashboard/settings', label: '系统设置', icon: Settings },
 ]
 
@@ -33,8 +39,8 @@ export default function DashboardLayout({
               <Stethoscope className="h-5 w-5" />
             </div>
             <div>
-              <h1 className="text-lg font-bold font-display text-ink-900">治未病</h1>
-              <p className="text-[10px] text-muted-foreground -mt-0.5">慢病管理平台</p>
+              <h1 className="text-lg font-bold font-display text-ink-900">智慧康养</h1>
+              <p className="text-[10px] text-muted-foreground -mt-0.5">中医康养平台</p>
             </div>
           </div>
 

@@ -48,7 +48,7 @@ export default function LoginPage() {
           <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-herb-700 text-white shadow-md">
             <Stethoscope className="h-7 w-7" />
           </div>
-          <CardTitle className="text-2xl">治未病 · 医生工作台</CardTitle>
+          <CardTitle className="text-2xl">智慧中医康养 · 医生工作台</CardTitle>
           <CardDescription className="mt-2">
             登录您的医生账户以管理患者
           </CardDescription>

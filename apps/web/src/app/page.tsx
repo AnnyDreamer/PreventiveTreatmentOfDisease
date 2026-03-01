@@ -6,7 +6,7 @@ export default function HomePage() {
       <div className="max-w-2xl text-center space-y-8 animate-fade-in">
         <div className="space-y-3">
           <h1 className="text-5xl font-bold tracking-tight text-ink-900">
-            治未病
+            智慧中医康养平台
           </h1>
           <p className="text-lg text-herb-600 font-display">
             上工治未病，中工治欲病，下工治已病
@@ -14,7 +14,7 @@ export default function HomePage() {
         </div>
 
         <p className="text-ink-500 text-lg leading-relaxed">
-          基于中医体质辨识的智能慢病管理平台，融合传统中医智慧与现代AI技术，
+          基于中医体质辨识的AI智能健康管理平台，融合传统中医智慧与现代AI技术，
           为患者提供个性化健康管理方案。
         </p>
 
