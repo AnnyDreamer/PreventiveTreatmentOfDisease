@@ -89,6 +89,7 @@ model PatientProfile {
   followupEnrollments    FollowupEnrollment[]
   reminderLogs           ReminderLog[]
   activityRegistrations  ActivityRegistration[]
+  serviceAppointments    ServiceAppointment[]
 }
 
 // 医生档案
@@ -105,6 +106,8 @@ model DoctorProfile {
 
   followupPlans        FollowupPlan[]
   publishedActivities  WellnessActivity[]
+  serviceSchedules     ServiceSchedule[]
+  serviceAppointments  ServiceAppointment[]
 }
 
 // 体质评估
@@ -292,6 +295,15 @@ enum ActivityStatus {
   CANCELLED
 }
 
+// 预约状态枚举
+enum AppointmentStatus {
+  PENDING    // 待确认
+  CONFIRMED  // 已确认
+  COMPLETED  // 已完成
+  CANCELLED  // 已取消
+  NO_SHOW    // 未到诊
+}
+
 // 康养服务
 model WellnessService {
   id                  String          @id @default(cuid())
@@ -300,6 +312,8 @@ model WellnessService {
   description         String          @db.Text
   benefits            Json            // string[]
   precautions         Json            // string[]
+  procedure           Json?           // string[] 服务流程步骤
+  galleryImages       Json?           // string[] 图片URL列表
   duration            String?
   price               String?
   suitableFor         Json            // ConstitutionType[]
@@ -311,10 +325,32 @@ model WellnessService {
   sortOrder           Int             @default(0)
   hospitalId          String
   hospital            Hospital        @relation(fields: [hospitalId], references: [id])
+  schedules           ServiceSchedule[]
+  appointments        ServiceAppointment[]
   createdAt           DateTime        @default(now())
   updatedAt           DateTime        @updatedAt
 
   @@index([hospitalId, isActive])
+}
+
+// 医生排班
+model ServiceSchedule {
+  id            String          @id @default(cuid())
+  serviceId     String
+  service       WellnessService @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  doctorId      String
+  doctor        DoctorProfile   @relation(fields: [doctorId], references: [id])
+  dayOfWeek     Json            // Int[] 1=周一...7=周日
+  startTime     String          // "09:00"
+  endTime       String          // "17:00"
+  slotDuration  Int             @default(60)
+  isActive      Boolean         @default(true)
+  note          String?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  @@index([serviceId])
+  @@index([doctorId])
 }
 
 // 义诊活动
@@ -397,6 +433,30 @@ model ReminderLog {
 
   @@index([patientId])
   @@index([createdAt])
+}
+
+// 康养服务预约
+model ServiceAppointment {
+  id              String            @id @default(cuid())
+  serviceId       String
+  service         WellnessService   @relation(fields: [serviceId], references: [id])
+  patientId       String
+  patient         PatientProfile    @relation(fields: [patientId], references: [id])
+  doctorId        String?
+  doctor          DoctorProfile?    @relation(fields: [doctorId], references: [id])
+  scheduledDate   DateTime          // 预约日期
+  scheduledTime   String            // "09:00"
+  status          AppointmentStatus @default(PENDING)
+  note            String?           // 主诉/备注
+  completionNote  String?           // 完成记录
+  cancelReason    String?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  @@index([serviceId])
+  @@index([patientId])
+  @@index([doctorId])
+  @@index([status, scheduledDate])
 }
 
 // 医院/机构
