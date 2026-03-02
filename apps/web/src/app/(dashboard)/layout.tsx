@@ -2,7 +2,6 @@ import Link from 'next/link'
 import {
   LayoutDashboard,
   Users,
-  ClipboardList,
   CalendarCheck,
   Leaf,
   Calendar,
@@ -15,7 +14,6 @@ import {
 const navItems = [
   { href: '/dashboard', label: '总览', icon: LayoutDashboard },
   { href: '/dashboard/patients', label: '患者管理', icon: Users },
-  { href: '/dashboard/assessments', label: '体质评估', icon: ClipboardList },
   { href: '/dashboard/followups', label: '随访管理', icon: CalendarCheck },
   { href: '/dashboard/services', label: '康养服务', icon: Leaf },
   { href: '/dashboard/activities', label: '义诊活动', icon: Calendar },

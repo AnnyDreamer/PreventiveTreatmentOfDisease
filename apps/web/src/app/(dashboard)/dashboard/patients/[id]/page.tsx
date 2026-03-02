@@ -15,7 +15,7 @@ import {
 import {
   ArrowLeft, Activity, BookOpen, MessageSquare,
   CalendarCheck, Utensils, Dumbbell, Moon, Pill, AlertTriangle,
-  Stethoscope, Plus, CheckCircle2, XCircle, AlertCircle,
+  Stethoscope, Plus, CheckCircle2, XCircle, AlertCircle, TrendingUp,
 } from 'lucide-react'
 import Link from 'next/link'
 
@@ -134,6 +134,25 @@ const APPT_STATUS_CONFIG: Record<AppointmentStatus, { label: string; icon: React
   CANCELLED: { label: '已取消', icon: XCircle, className: 'text-muted-foreground bg-muted' },
   NO_SHOW: { label: '未到诊', icon: XCircle, className: 'text-cinnabar-500 bg-cinnabar-50' },
 }
+
+// 历次评估 demo 数据（待接真实 API 时替换）
+const assessmentHistory = [
+  {
+    id: 'a1', date: '2026-02-23', primaryType: '气虚质', score: 68.8,
+    secondaryTypes: ['阳虚质'],
+    scores: { '平和质': 35, '气虚质': 68.8, '阳虚质': 42.9, '阴虚质': 18.8, '痰湿质': 25.0, '湿热质': 14.3, '血瘀质': 21.4, '气郁质': 17.9, '特禀质': 10.7 },
+  },
+  {
+    id: 'a2', date: '2025-11-10', primaryType: '气虚质', score: 74.2,
+    secondaryTypes: ['阳虚质', '气郁质'],
+    scores: { '平和质': 28, '气虚质': 74.2, '阳虚质': 50.0, '阴虚质': 22.5, '痰湿质': 20.0, '湿热质': 12.5, '血瘀质': 18.8, '气郁质': 35.7, '特禀质': 8.9 },
+  },
+  {
+    id: 'a3', date: '2025-06-05', primaryType: '气虚质', score: 79.5,
+    secondaryTypes: ['气郁质'],
+    scores: { '平和质': 22, '气虚质': 79.5, '阳虚质': 37.5, '阴虚质': 19.6, '痰湿质': 17.9, '湿热质': 10.7, '血瘀质': 16.1, '气郁质': 42.9, '特禀质': 7.1 },
+  },
+]
 
 function getToken() {
   return document.cookie.split('; ').find((c) => c.startsWith('token='))?.split('=')[1]
@@ -480,7 +499,70 @@ export default function PatientDetailPage({ params }: { params: Promise<{ id: st
         </Card>
       </div>
 
-      {/* Row 4: 康养服务记录 */}
+      {/* Row 4: 历次评估记录 */}
+      <Card>
+        <CardHeader className="py-2.5 px-4 flex flex-row items-center gap-1.5">
+          <TrendingUp className="h-4 w-4 text-herb-500" />
+          <CardTitle className="text-sm">历次体质评估</CardTitle>
+          <span className="text-[10px] text-muted-foreground ml-1">共 {assessmentHistory.length} 次</span>
+        </CardHeader>
+        <CardContent className="px-4 pb-4 pt-0">
+          <div className="space-y-3">
+            {assessmentHistory.map((a, idx) => {
+              const prev = assessmentHistory[idx + 1]
+              const delta = prev ? +(a.score - prev.score).toFixed(1) : null
+              return (
+                <div key={a.id} className="border border-border rounded-lg p-3">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-muted-foreground">{a.date}</span>
+                      <Badge variant="secondary" className="text-[10px]">{a.primaryType}</Badge>
+                      {a.secondaryTypes.map((t) => (
+                        <Badge key={t} variant="outline" className="text-[10px]">兼 {t}</Badge>
+                      ))}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-bold text-herb-700">{a.score} 分</span>
+                      {delta !== null && (
+                        <span className={`text-[10px] font-medium ${delta < 0 ? 'text-celadon-600' : 'text-cinnabar-500'}`}>
+                          {delta < 0 ? `↓${Math.abs(delta)}` : `↑${delta}`}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  {/* 迷你体质得分条 */}
+                  <div className="grid grid-cols-3 gap-x-4 gap-y-1">
+                    {Object.entries(a.scores)
+                      .sort(([, va], [, vb]) => vb - va)
+                      .slice(0, 6)
+                      .map(([type, score]) => (
+                        <div key={type} className="flex items-center gap-1.5">
+                          <span className="text-[10px] text-ink-400 w-10 shrink-0">{type}</span>
+                          <div className="flex-1 h-1.5 bg-herb-50 rounded-full overflow-hidden">
+                            <div
+                              className={`h-full rounded-full ${type === a.primaryType ? 'bg-herb-500' : 'bg-herb-200'}`}
+                              style={{ width: `${score}%` }}
+                            />
+                          </div>
+                          <span className="text-[10px] text-ink-400 w-6 text-right">{score}</span>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+          {assessmentHistory.length > 1 && (
+            <p className="text-[11px] text-muted-foreground mt-3 text-center">
+              主要体质得分变化：
+              {assessmentHistory[assessmentHistory.length - 1].score} → {assessmentHistory[0].score} 分
+              （{assessmentHistory[0].score < assessmentHistory[assessmentHistory.length - 1].score ? '↓ 调理有效果' : '↑ 需加强干预'}）
+            </p>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Row 5: 康养服务记录 */}
       <Card>
         <CardHeader className="py-2.5 px-4 flex flex-row items-center gap-1.5">
           <Stethoscope className="h-4 w-4 text-herb-500" />
