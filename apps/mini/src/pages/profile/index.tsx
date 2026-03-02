@@ -28,6 +28,12 @@ export default function ProfilePage() {
       path: '/pages/plan/index',
     },
     {
+      key: 'appointments',
+      title: '我的预约',
+      icon: '📅',
+      path: '/pages/appointments/index',
+    },
+    {
       key: 'stats',
       title: '健康数据统计',
       icon: '📊',

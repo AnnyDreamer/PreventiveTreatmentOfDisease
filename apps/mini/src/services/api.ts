@@ -23,6 +23,17 @@ export interface AssessmentAnswer {
   value: number;
 }
 
+export interface TongueAnalysisResult {
+  tongueColor: string;
+  tongueShape: string;
+  coatingColor: string;
+  coatingThickness: string;
+  coatingMoisture: string;
+  scores: Record<string, number>;
+  summary: string;
+  confidence: number;
+}
+
 export interface AssessmentResult {
   id: string;
   primaryType: string;
@@ -38,6 +49,20 @@ export interface AssessmentResult {
     score: number;
   }>;
   createdAt: string;
+  mode?: "FULL" | "SMART";
+  tongueAnalysis?: TongueAnalysisResult;
+}
+
+export interface Phase1Result {
+  phase1Scores: Record<string, number>;
+  weightedScores: Record<string, number>;
+  top3Types: string[];
+  phase2Questions: Array<{
+    id: string;
+    text: string;
+    constitutionType: string;
+    dimension: string;
+  }>;
 }
 
 export interface HealthPlan {
@@ -116,7 +141,7 @@ export const authApi = {
 /* ========== Assessment 体质评估 ========== */
 
 export const assessmentApi = {
-  /** 提交评估问卷 */
+  /** 提交评估问卷（FULL 模式） */
   submitAssessment: (answers: AssessmentAnswer[]) =>
     post<AssessmentResult>(
       "/api/assessment/submit",
@@ -137,6 +162,45 @@ export const assessmentApi = {
         page,
         pageSize,
       } as unknown as Record<string, unknown>,
+    ),
+
+  /** 提交评估问卷（FULL 模式 — 新格式） */
+  submitFullAssessment: (answers: Record<string, number>) =>
+    post<AssessmentResult>(
+      "/api/assessment",
+      { mode: "FULL", answers },
+      { showLoading: true },
+    ),
+
+  /** AI 舌诊分析 */
+  analyzeTongue: (image: string) =>
+    post<{ tongueAnalysis: TongueAnalysisResult; rawResponse: string }>(
+      "/api/assessment/tongue",
+      { image },
+    ),
+
+  /** Phase1 核心筛查分析 */
+  analyzePhase1: (
+    phase1Answers: Record<string, number>,
+    tongueResult?: TongueAnalysisResult,
+  ) =>
+    post<Phase1Result>("/api/assessment/phase1", {
+      phase1Answers,
+      tongueResult,
+    }),
+
+  /** 提交智能评估（SMART 模式） */
+  submitSmartAssessment: (data: {
+    phase1Answers: Record<string, number>;
+    phase2Answers: Record<string, number>;
+    phase2Types: string[];
+    tongueResult?: TongueAnalysisResult;
+    tongueRawResponse?: string;
+  }) =>
+    post<AssessmentResult>(
+      "/api/assessment",
+      { mode: "SMART", ...data },
+      { showLoading: true },
     ),
 };
 
@@ -295,6 +359,24 @@ export interface WellnessServiceDetail extends WellnessService {
   hospital: { id: string; name: string; address: string | null }
 }
 
+export interface AvailabilitySlot {
+  doctorId: string
+  doctorName: string
+  doctorTitle: string | null
+  time: string
+  available: boolean
+}
+
+export interface MyAppointment {
+  id: string
+  scheduledDate: string
+  scheduledTime: string
+  status: string
+  note: string | null
+  service: { id: string; name: string; category: string }
+  doctor: { id: string; title: string | null; user: { name: string | null } } | null
+}
+
 export const serviceApi = {
   /** 获取康养服务列表 */
   getList: (category?: string, hospitalId?: string) =>
@@ -308,6 +390,22 @@ export const serviceApi = {
 
   /** 获取服务详情 */
   getDetail: (id: string) => get<WellnessServiceDetail>(`/api/services/${id}`),
+
+  /** 获取可用时间槽 */
+  getAvailability: (id: string, date: string) =>
+    get<{ date: string; items: AvailabilitySlot[] }>(`/api/services/${id}/availability`, { date }),
+};
+
+/* ========== 预约 Appointment API ========== */
+
+export const appointmentApi = {
+  /** 创建预约 */
+  create: (data: { serviceId: string; doctorId?: string; scheduledDate: string; scheduledTime: string; note?: string }) =>
+    post<{ id: string }>('/api/appointments', data as unknown as Record<string, unknown>, { showLoading: true }),
+
+  /** 获取我的预约列表 */
+  getMine: (status?: string) =>
+    get<{ items: MyAppointment[]; total: number }>('/api/appointments/mine', status ? { status } as Record<string, unknown> : {}),
 };
 
 /* ========== 义诊活动 API ========== */

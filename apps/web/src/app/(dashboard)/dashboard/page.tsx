@@ -45,6 +45,16 @@ interface PendingAppointment {
   patient: { user: { name: string | null } }
 }
 
+interface TodayAppt {
+  id: string
+  scheduledDate: string
+  scheduledTime: string
+  status: ApptStatus
+  service: { name: string }
+  patient: { user: { name: string | null } }
+  doctor: { user: { name: string | null }; title: string | null } | null
+}
+
 function getToken() {
   if (typeof document === 'undefined') return undefined
   return document.cookie.split('; ').find((c) => c.startsWith('token='))?.split('=')[1]
@@ -153,6 +163,8 @@ export default function DashboardPage() {
   const [pendingAppts, setPendingAppts] = useState<PendingAppointment[]>([])
   const [todayApptCount, setTodayApptCount] = useState<number | null>(null)
   const [apptUpdating, setApptUpdating] = useState<string | null>(null)
+  const [todaySchedule, setTodaySchedule] = useState<TodayAppt[]>([])
+  const [scheduleLoading, setScheduleLoading] = useState(true)
 
   useEffect(() => {
     const fetchAppts = async () => {
@@ -168,6 +180,21 @@ export default function DashboardPage() {
       }
     }
     fetchAppts()
+  }, [])
+
+  useEffect(() => {
+    const fetchSchedule = async () => {
+      try {
+        const today = new Date().toISOString().slice(0, 10)
+        const data = await apiFetch(`/api/appointments?date=${today}&pageSize=20`)
+        setTodaySchedule(data.data.items || [])
+      } catch (e) {
+        console.error(e)
+      } finally {
+        setScheduleLoading(false)
+      }
+    }
+    fetchSchedule()
   }, [])
 
   const handleApptAction = async (id: string, status: 'CONFIRMED' | 'CANCELLED') => {
@@ -389,6 +416,66 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
         </div>
+
+        {/* ── Row 2.5: 今日日程 ── */}
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <h3 className="text-sm font-semibold text-ink-900">今日日程</h3>
+                <span className="text-xs text-muted-foreground">
+                  {new Date().toLocaleDateString('zh-CN', { month: 'numeric', day: 'numeric' })}
+                </span>
+                {!scheduleLoading && todaySchedule.length > 0 && (
+                  <Badge variant="secondary" className="text-[10px]">共 {todaySchedule.length} 场</Badge>
+                )}
+              </div>
+              <Link href="/dashboard/services" className="text-xs text-herb-600 hover:text-herb-700 flex items-center gap-1">
+                预约管理 <ArrowRight className="h-3 w-3" />
+              </Link>
+            </div>
+            {scheduleLoading ? (
+              <div className="space-y-2">
+                {[1, 2, 3].map(i => <div key={i} className="h-9 bg-muted/30 rounded animate-pulse" />)}
+              </div>
+            ) : todaySchedule.length === 0 ? (
+              <div className="flex items-center justify-center py-6 text-muted-foreground">
+                <p className="text-xs">今日暂无预约</p>
+              </div>
+            ) : (
+              <div className="space-y-1">
+                {todaySchedule
+                  .sort((a, b) => a.scheduledTime.localeCompare(b.scheduledTime))
+                  .map((appt) => {
+                    const statusMap: Record<ApptStatus, { label: string; color: string }> = {
+                      PENDING: { label: '待确认', color: 'text-amber-600 bg-amber-50' },
+                      CONFIRMED: { label: '已确认', color: 'text-celadon-600 bg-celadon-50' },
+                      COMPLETED: { label: '已完成', color: 'text-ink-400 bg-ink-50' },
+                      CANCELLED: { label: '已取消', color: 'text-muted-foreground bg-muted' },
+                      NO_SHOW: { label: '未到诊', color: 'text-cinnabar-500 bg-cinnabar-50' },
+                    }
+                    const sc = statusMap[appt.status] || statusMap.PENDING
+                    return (
+                      <div key={appt.id} className="flex items-center gap-3 py-1.5 border-b border-border/50 last:border-0">
+                        <span className="text-xs font-mono text-muted-foreground w-10 shrink-0">{appt.scheduledTime}</span>
+                        <span className="text-sm font-medium text-ink-900 min-w-0 truncate flex-1">
+                          {appt.patient?.user?.name || '—'}
+                        </span>
+                        <span className="text-xs text-ink-500 truncate max-w-[120px]">{appt.service?.name}</span>
+                        {appt.doctor && (
+                          <span className="text-xs text-muted-foreground whitespace-nowrap">{appt.doctor.user?.name}</span>
+                        )}
+                        <span className={`inline-flex items-center rounded-full px-1.5 py-0.5 text-[10px] font-medium whitespace-nowrap ${sc.color}`}>
+                          {sc.label}
+                        </span>
+                      </div>
+                    )
+                  })
+                }
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
         {/* ── Row 3: 节气卡片 + 活动/内容 Tab ── */}
         <div className="grid gap-5 lg:grid-cols-12">

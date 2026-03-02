@@ -14,6 +14,8 @@ export default defineAppConfig({
     'pages/activity/detail',
     'pages/content/index',
     'pages/content/detail',
+    'pages/wellness/booking',
+    'pages/appointments/index',
   ],
   tabBar: {
     color: '#6b6b8a',

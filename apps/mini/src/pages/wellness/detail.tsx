@@ -149,13 +149,22 @@ export default function WellnessDetailPage() {
         </View>
       )}
 
-      {/* 预约提示 */}
-      <View className='section-card'>
-        <Text className='section-title'>预约方式</Text>
-        <View className='contact-hint'>
-          <Text className='contact-hint__text'>
-            📞 请联系 {service.hospital.name} 治未病科进行预约
-          </Text>
+      {/* 底部占位，防止内容被固定栏遮挡 */}
+      <View style={{ height: '160rpx' }} />
+
+      {/* 预约 */}
+      <View className='booking-bar'>
+        <View className='booking-bar__info'>
+          <Text className='booking-bar__price'>{service.price || '价格面议'}</Text>
+          <Text className='booking-bar__duration'>{service.duration || ''}</Text>
+        </View>
+        <View
+          className='booking-bar__btn'
+          onClick={() => Taro.navigateTo({
+            url: `/pages/wellness/booking?id=${service.id}&name=${encodeURIComponent(service.name)}`
+          })}
+        >
+          <Text className='booking-bar__btn-text'>立即预约</Text>
         </View>
       </View>
     </View>

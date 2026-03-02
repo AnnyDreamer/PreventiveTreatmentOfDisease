@@ -93,15 +93,6 @@ export async function POST(request: NextRequest) {
     const payload = await verifyToken(token)
     if (!payload) return unauthorizedResponse()
 
-    const user = await prisma.user.findUnique({
-      where: { id: payload.userId },
-      select: { hospitalId: true, doctorProfile: { select: { id: true } } },
-    })
-
-    if (!user?.hospitalId) {
-      return errorResponse('用户未关联医院', 403)
-    }
-
     const body = await request.json()
     const parsed = createAppointmentSchema.safeParse(body)
     if (!parsed.success) {
@@ -110,20 +101,40 @@ export async function POST(request: NextRequest) {
 
     const { serviceId, patientId, doctorId, scheduledDate, scheduledTime, note } = parsed.data
 
-    // 验证 service 属于同一医院
-    const service = await prisma.wellnessService.findFirst({
-      where: { id: serviceId, hospitalId: user.hospitalId },
+    // 通过 serviceId 查询服务，获取 hospitalId（不再要求 user.hospitalId）
+    const service = await prisma.wellnessService.findUnique({
+      where: { id: serviceId },
+      select: { id: true, name: true, category: true, hospitalId: true, isActive: true },
     })
     if (!service) {
-      return errorResponse('服务不存在或不属于本院', 404)
+      return errorResponse('服务不存在', 404)
+    }
+    if (!service.isActive) {
+      return errorResponse('该服务当前不可预约', 400)
     }
 
-    // 验证 patient 属于同一医院
-    const patient = await prisma.patientProfile.findFirst({
-      where: { id: patientId, user: { hospitalId: user.hospitalId } },
+    // 验证 patient 存在即可（不强制同医院，小程序患者可能跨院预约）
+    const patient = await prisma.patientProfile.findUnique({
+      where: { id: patientId },
     })
     if (!patient) {
-      return errorResponse('患者不存在或不属于本院', 404)
+      return errorResponse('患者不存在', 404)
+    }
+
+    // 冲突检查：同医生+同日期+同时间 已有 PENDING/CONFIRMED 预约则拒绝
+    if (doctorId) {
+      const start = new Date(scheduledDate)
+      const end = new Date(scheduledDate)
+      end.setDate(end.getDate() + 1)
+      const conflict = await prisma.serviceAppointment.findFirst({
+        where: {
+          doctorId,
+          scheduledTime,
+          scheduledDate: { gte: start, lt: end },
+          status: { in: [AppointmentStatus.PENDING, AppointmentStatus.CONFIRMED] },
+        },
+      })
+      if (conflict) return errorResponse('该时段已被预约，请选择其他时间', 409)
     }
 
     const appointment = await prisma.serviceAppointment.create({

@@ -191,16 +191,46 @@
   line-height: 1.6;
 }
 
-// 预约提示
-.contact-hint {
-  background: #f0fdf4;
-  border: 1px solid #bbf7d0;
-  border-radius: 12px;
-  padding: 16px;
-  text-align: center;
-}
+// 底部固定预约栏
+.booking-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx 32rpx;
+  padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
+  background: #faf7f2;
+  border-top: 1rpx solid #e8e0d5;
 
-.contact-hint__text {
-  font-size: 28rpx;
-  color: #2d9a64;
+  &__info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__price {
+    font-size: 32rpx;
+    font-weight: 700;
+    color: #c83232;
+  }
+
+  &__duration {
+    font-size: 24rpx;
+    color: #9ca3af;
+    margin-top: 4rpx;
+  }
+
+  &__btn {
+    background: linear-gradient(135deg, #8b5a2b, #6b4020);
+    border-radius: 48rpx;
+    padding: 20rpx 48rpx;
+  }
+
+  &__btn-text {
+    color: #fff;
+    font-size: 28rpx;
+    font-weight: 600;
+  }
 }
